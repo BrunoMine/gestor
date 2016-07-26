@@ -254,6 +254,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			if fields.salvar then
 				
 				-- Salvar dados gerais
+				if fields.processo == "" then fields.processo = "-" end
+				if fields.comando_abertura == "" then fields.comando_abertura = "-" end
+				if fields.from_email == "" then fields.from_email = "-" end
+				if fields.from_smtp == "" then fields.from_smtp = "-" end
+				if fields.from_smtp_port == "" then fields.from_smtp_port = "-" end
+				if fields.from_subject == "" then fields.from_subject = "-" end
+				if fields.to_email == "" then fields.to_email = "-" end
 				gestor.bd:salvar("anticrash", "processo", fields.processo)
 				gestor.bd:salvar("anticrash", "comando_abertura", fields.comando_abertura)
 				gestor.bd:salvar("anticrash", "from_email", fields.from_email)
@@ -272,52 +279,56 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				)
 				
 				-- Verificar sistema de email
-				if fields.status_email = "Ativo" then
-					--[[
-						EM DESENVOLVIMENTO
-						Deve criar algum bloco de codigo
-						que verifique se o computador está
-						apto a enviar emails (independente 
-						se os dados fornecidos estão corretos)
+				if fields.status_email == "Ativo" then
+					-- Verificando dados
+					if fields.from_email == "-"
+						or fields.from_smtp == "-"
+						or fields.from_smtp_port == "-"
+						or fields.from_subject == "-"
+						or fields.to_email == "-"
+						or gestor.bd:verif("anticrash", "from_senha") ~= true
+					then
+						minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+							default.gui_bg..
+							default.gui_bg_img..
+							"label[0,0;AVISO \nFaltam dados no sistema \nde emails]"
+						)
+						minetest.after(2, gestor.menu_principal, name)
+						gestor.bd:salvar("anticrash", "status_email", "false")
+						return
+					end
+					-- Verificando se sendemail esta instalado
+					local verif_sendemail = os.execute("sendemail --help")
+					if verif_sendemail ~= 0 and verif_sendemail ~= 256 then
+						minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+							default.gui_bg..
+							default.gui_bg_img..
+							"label[0,0;AVISO \nFalta o software sendEmail \nno computador para usar \no Sistema de Email]"
+						)
+						minetest.after(3, gestor.menu_principal, name)
+						gestor.bd:salvar("anticrash", "status_email", "false")
+						return
+					end 
 						
-						if ?????? then
-							??????
-						else
-							minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-								default.gui_bg..
-								default.gui_bg_img..
-								"label[0,0;AVISO \nFalta o software sendEmail \nno computador para usar \no Sistema de Email]"
-							)
-							minetest.after(2, gestor.menu_principal, name)
-							return
-						end 
-						
-					  ]]
-					--gestor.bd:salvar("anticrash", "status_email", "true")
+					gestor.bd:salvar("anticrash", "status_email", "true")
 				end
 				
 				-- Verificar sistema de backup
-				if fields.status_backup = "Ativo" then
-					--[[
-						EM DESENVOLVIMENTO
-						Deve criar algum bloco de codigo
-						que verifique se o computador está
-						apto a enviar compactar em tar.gz
+				if fields.status_backup == "Ativo" then
+					-- Verificando se compactador TAR esta instalado
+					local verif_tar = os.execute("tar --help")
+					if verif_tar ~= 0 and verif_tar ~= 256 then
+						minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+							default.gui_bg..
+							default.gui_bg_img..
+							"label[0,0;AVISO \nFalta o compactador TAR\nno computador para usar \no Sistema de Backups]"
+						)
+						minetest.after(3, gestor.menu_principal, name)
+						gestor.bd:salvar("anticrash", "status_backup", "false")
+						return
+					end 
 						
-						if ?????? then
-							??????
-						else
-							minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-								default.gui_bg..
-								default.gui_bg_img..
-								"label[0,0;AVISO \nFalta um compactador\nno computador para usar \no Sistema de Backups]"
-							)
-							minetest.after(2, gestor.menu_principal, name)
-							return
-						end 
-						
-					  ]]
-					--gestor.bd:salvar("anticrash", "status_backup", "true")
+					gestor.bd:salvar("anticrash", "status_backup", "true")
 				end
 				
 				minetest.after(2, gestor.menu_principal, name)
