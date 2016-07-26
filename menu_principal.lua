@@ -108,28 +108,48 @@ gestor.menu_principal = function(name, inicio)
 		local status_backup = "1"
 		if gestor.bd:pegar("anticrash", "status_backup") == "true"  then status_backup = "2" end
 		
+		
+		local bin_paths = io.popen"locate bin/minetest":read"*all"
+		bin_paths = string.gsub(bin_paths, "bin/minetest", "bin")
+		bin_paths = string.gsub(bin_paths, "\n", ",")
+		local path_selecionado = gestor.bd:pegar("anticrash", "bin_path") or "-"
+		
+		local comando_selecionado = 1
+		local co = gestor.bd:pegar("anticrash", "comando_abertura")
+		for n, c in ipairs(string.split("minetest --server,minetestserver", ",")) do
+			if c == co then
+				comando_selecionado = n
+				break
+			end
+		end
+		
 		formspec = formspec
 			.."label[4,1;AntiCrash]"
 			.."button[10.6,1.5;3,1;salvar;Salvar Dados]"
 			-- Sistema Verificador AntiCrash
 			.."label[4,2;Sistema Verificador AntiCrash]"
 			.."button[4,2.7;2,1;iniciar;Iniciar]"
-			.."field[6.4,3;4,1;processo;Nome do Processo;"..gestor.bd:pegar("anticrash", "processo").."]"
-			.."field[10.4,3;3.5,1;quedas;Lim. de quedas seguidas;5]"
-			.."field[4.3,4;9.6,1;comando_abertura;Comando de abertura do servidor (Via terminal UNIX);"..gestor.bd:pegar("anticrash", "comando_abertura").."]"
+			.."label[6,2.35;Comando de abertura]"
+			.."dropdown[6,2.75;4.2,1;comando_abertura;minetest --server,minetestserver;"..comando_selecionado.."]"
+			.."label[4,3.4;Caminho para pasta do executavel do servidor]"
+			.."dropdown[4,3.8;10.2,1;bin_path;"..path_selecionado..","..bin_paths..";1]"
+			.."field[10.4,3;1.6,1;quedas;Quedas;"..gestor.bd:pegar("anticrash", "quedas").."]"
+			.."field[12,3;1.9,1;interval;Intervalo;"..gestor.bd:pegar("anticrash", "interval").."]"
 			-- Sistema Notificador via Email
 			.."label[4,5;Sistema Notificador via Email]"
 			.."label[4,5.4;Estado]"
 			.."dropdown[4,5.8;2,1;status_email;Inativo,Ativo;"..status_email.."]"
 			.."field[6.3,6;4.3,1;from_email;Email emissor;"..gestor.bd:pegar("anticrash", "from_email").."]"
 			.."pwdfield[10.6,6;3.3,1;from_senha;Senha"..status_senha.."]"
-			.."field[4.3,7;6,1;from_smtp;Servidor SMTP do email emissor;"..gestor.bd:pegar("anticrash", "from_smtp").."]"
-			.."field[10.3,7;3.6,1;from_smtp_port;Porta;"..gestor.bd:pegar("anticrash", "from_smtp_port").."]"
+			.."field[4.3,7;4,1;from_login;Login do SMTP;"..gestor.bd:pegar("anticrash", "from_login").."]"
+			.."field[8.3,7;4,1;from_smtp;SMTP do email emissor;"..gestor.bd:pegar("anticrash", "from_smtp").."]"
+			.."field[12.3,7;1.6,1;from_smtp_port;Porta;"..gestor.bd:pegar("anticrash", "from_smtp_port").."]"
 			.."field[4.3,8;5,1;from_subject;Titulo da mensagem de email enviada;"..gestor.bd:pegar("anticrash", "from_subject").."]"
 			.."field[9.3,8;4.6,1;to_email;Email do destinatario;"..gestor.bd:pegar("anticrash", "to_email").."]"
 			-- Sistema de Backup
 			.."label[4,8.8;Sistema de Backup]"
 			.."dropdown[4,9.3;3,1;status_backup;Inativo,Ativo;"..status_backup.."]"
+			.."button[10.6,8.6;3,1;testar_email;Enviar email teste]" -- Testar email
 			
 	end
 
@@ -257,17 +277,23 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				if fields.processo == "" then fields.processo = "-" end
 				if fields.comando_abertura == "" then fields.comando_abertura = "-" end
 				if fields.from_email == "" then fields.from_email = "-" end
+				if fields.from_login == "" then fields.from_login = "-" end
 				if fields.from_smtp == "" then fields.from_smtp = "-" end
 				if fields.from_smtp_port == "" then fields.from_smtp_port = "-" end
 				if fields.from_subject == "" then fields.from_subject = "-" end
 				if fields.to_email == "" then fields.to_email = "-" end
-				gestor.bd:salvar("anticrash", "processo", fields.processo)
+				if fields.bin_path == "" then fields.bin_path = "-" end
+				if fields.quedas == "" or not tonumber(fields.quedas) then fields.quedas = "5" end
+				gestor.bd:salvar("anticrash", "processo", fields.comando_abertura)
 				gestor.bd:salvar("anticrash", "comando_abertura", fields.comando_abertura)
 				gestor.bd:salvar("anticrash", "from_email", fields.from_email)
+				gestor.bd:salvar("anticrash", "from_login", fields.from_login)
 				gestor.bd:salvar("anticrash", "from_smtp", fields.from_smtp)
 				gestor.bd:salvar("anticrash", "from_smtp_port", fields.from_smtp_port)
 				gestor.bd:salvar("anticrash", "from_subject", fields.from_subject)
 				gestor.bd:salvar("anticrash", "to_email", fields.to_email)
+				gestor.bd:salvar("anticrash", "bin_path", fields.bin_path)
+				gestor.bd:salvar("anticrash", "quedas", fields.quedas)
 				if fields.from_senha ~= "" then
 					gestor.bd:salvar("anticrash", "from_senha", fields.from_senha)
 				end
@@ -335,7 +361,52 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				return
 			
 			elseif fields.iniciar then
+				if gestor.bd:pegar("anticrash", "bin_path") == "-"
+					or gestor.bd:pegar("anticrash", "bin_path") == "-"
+				then
+					minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+						default.gui_bg..
+						default.gui_bg_img..
+						"label[0,0;AVISO \nFaltam alguns dados\npara iniciar o anticrash \ncorretamente]"
+					)
+					minetest.after(2, gestor.menu_principal, name)
+					return
+				end
 				gestor.anticrash.iniciar()
+				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+						default.gui_bg..
+						default.gui_bg_img..
+						"label[0,0;AVISO \nO anticrash foi iniciado ]"
+					)
+				minetest.after(2, gestor.menu_principal, name)
+				return
+			elseif fields.testar_email then
+				if gestor.bd:pegar("anticrash", "status_email") == "false" then
+					minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+						default.gui_bg..
+						default.gui_bg_img..
+						"label[0,0;AVISO \nO sistema de emails \nprecisa estar ativo para \nenviar email teste]"
+					)
+					minetest.after(2, gestor.menu_principal, name)
+					return
+				end
+				local comando = "sendemail "
+					.."-s \""..gestor.bd:pegar("anticrash", "from_smtp")..":"..gestor.bd:pegar("anticrash", "from_smtp_port").."\" "
+					.."-xu \""..gestor.bd:pegar("anticrash", "from_login").."\" "
+					.."-xp \""..gestor.bd:pegar("anticrash", "from_senha").."\" "
+					.."-f \""..gestor.bd:pegar("anticrash", "from_email").."\" "
+					.."-t \""..gestor.bd:pegar("anticrash", "to_email").."\" "
+					.."-u \"Gestor - Email teste\" "
+					.."-m \"Essa mensagem foi um teste enviado pelo mod gestor\" "
+					.."-o message-charset=UTF-8 &"
+				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+					default.gui_bg..
+					default.gui_bg_img..
+					"label[0,0;AVISO \nEmail de teste enviado \nverifique a caixa de \nentrada do destinatario]"
+				)
+				os.execute(comando)
+				minetest.after(2, gestor.menu_principal, name)
+				return
 			end
 		end
 	end

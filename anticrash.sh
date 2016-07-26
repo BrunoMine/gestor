@@ -12,6 +12,7 @@
 
 # Intervalo de verificação
 interval=$1 #PADRÃO: 300 segundos (5 minutos)
+quedas=$13 # Vezes que o servidor pode cair seguidamente
 
 # Nome do processo
 processo=$2 #"minetest --server"
@@ -50,13 +51,8 @@ while [ true == true ]; do
 		#7z a "$world_path ($quando).7z" "$world_path"
 		tar -czf "$world_path($quando).tar.gz" "$world_path"
 
-<<<<<<< .mine
 		echo -e "[\033[01;32m$quando\033[00;00m] Enviando relatório para '$to_email'..."
 		sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "$from_text" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
-=======
-		echo -e "[\033[01;32m$quando\033[00;00m] Enviando relatório para '$to_email'..."
-		sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "O servidor Minemacro crashou" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
->>>>>>> .r9
 
 		echo -e "[\033[01;32m$quando\033[00;00m] Reativando servidor de minetest ..."
 		#$comando_abertura &
