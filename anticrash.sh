@@ -40,22 +40,22 @@ echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Iniciando verifica
 
 # Laço de verificação infinito
 while [ true == true ]; do
-if ! [ "$(pgrep -f "$processo")" ]; then # verificar processo
-quando="$(date '+%Y-%m-%d %H-%M-%S')"
+	if ! [ "$(pgrep -f "$processo")" ]; then # verificar processo
+		quando="$(date '+%Y-%m-%d %H-%M-%S')"
 
-echo -e "[\033[01;32m$quando\033[00;00m] Renomenado 'debug.txt' para 'debug ($quando).txt'..."
-mv "$debug_path/debug.txt" "$debug_path/debug ($quando).txt" # Salvando arquivo de depuração
+		echo -e "[\033[01;32m$quando\033[00;00m] Renomenado 'debug.txt' para 'debug ($quando).txt'..."
+		mv "$debug_path/debug.txt" "$debug_path/debug ($quando).txt" # Salvando arquivo de depuração
 
-echo -e "[\033[01;32m$quando\033[00;00m] Fazendo backup do mapa em '$world_path($quando).tar.gz'..."
-#7z a "$world_path ($quando).7z" "$world_path"
-tar -czf "$world_path($quando).tar.gz" "$world_path"
+		echo -e "[\033[01;32m$quando\033[00;00m] Fazendo backup do mapa em '$world_path($quando).tar.gz'..."
+		#7z a "$world_path ($quando).7z" "$world_path"
+		tar -czf "$world_path($quando).tar.gz" "$world_path"
 
-echo -e "[\033[01;32m$quando\033[00;00m] Enviando relatório para '$to_email'..."
-sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "O servidor Minemacro crashou" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
+		echo -e "[\033[01;32m$quando\033[00;00m] Enviando relatório para '$to_email'..."
+		sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "O servidor Minemacro crashou" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
 
-echo -e "[\033[01;32m$quando\033[00;00m] Reativando servidor de minetest ..."
-#$comando_abertura &
-fi
-#echo "aguardando $interval segundos"
-sleep $interval
+		echo -e "[\033[01;32m$quando\033[00;00m] Reativando servidor de minetest ..."
+		#$comando_abertura &
+	fi
+	#echo "aguardando $interval segundos"
+	sleep $interval
 done
