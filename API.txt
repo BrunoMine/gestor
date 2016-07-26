@@ -1,0 +1,133 @@
+API do gestor
+=============
+
+As funcionalidades do gestor estao descritas com foco para desenvolvimento de mods de apoio
+
+
+======================================> Lugares Avulsos <======================================
+Esses lugares sao estruturas que precisam ser montadas para o funcionamento de uma aventura ou 
+tarefa dos jogadores. O gestor pode informar essa estrutura e seu status de atividade 
+(OK ou PENDENTE) para o administrador acompanhada de um texto sobre a estrutura que pode ser 
+usado para informar um comando ou metodo facil para o administrador criar a estrutura.
+
+Sintaxe
+gestor.lugares_avulsos.definir(nome, status, texto)
+
+* Todas as variaveis sao obrigatorias (nome, status, texto)
+
+* Variavel nome deve ser uma cadeia de caracteres para o nome do lugar
+
+* Variavel status deve ser do tipo boleano para definir o estado do lugar onde true serve 
+para OK e false serve para PENDENTE
+
+* Variavel texto deve ser uma cadeia de caracteres que serve para definir um texto sobre o 
+lugar e como criar o lugar por meio de comandos ou qualquer outro metodo que quiser informar.
+Jamais use a barra invertida ("\") nesse texto pois isso corrompe o banco de dados do gestor. 
+Exemplo:
+Esse lugar se trata de uma vila onde o jogador troca madeira por qualquer outra coisa. Use o 
+comando /montar e aguarde o termino
+
+Exemplo de uso:
+
+-- Nome da estrutura acompanha o nome do mod (para evitar nomes iguais entre os mods)
+local nome_estrutura = minetest.get_current_modname() .. "_castelo"
+
+-- Texto explicativo da estrutura
+local texto = "Castelo do norte. Use /"..nome_estrutura.."_instalar par montar a estrutura"
+
+-- Verifica se ja existe o se nao existir, cria
+if not gestor.registros.lugares["avulsos"][nome_estrutura] then
+	gestor.lugares_avulsos.definir(nome_estrutura, false, texto)
+end
+
+-- Verifica se ja foi criada e toma uma atitude
+if gestor.registros.lugares["avulsos"][nome_estrutura].status == false then
+	
+	-- Bloco de algoritimos
+	
+	gestor.lugares_avulsos.definir(nome_estrutura, false, "Castelo do mal")
+end
+
+===============================================================================================
+
+
+
+================================> Serializar/Salvar estrutura <================================
+Esse método é usado para serializar uma estrutura dentro da pasta estruturas de um mod que a 
+executa
+
+Sintaxe
+gestor.estruturador.salvar(pos, nome, largura, altura, modp, silencio)
+
+* Variaveis pos, nome, largura e altura sao obrigatorias e caso as outros 3 (largura, altura, 
+modp) não sejam definidas, elas serão pesquisadas com base na tabela de estruturas do proprio 
+gestor
+
+* Variavel pos é uma coordenada do ponto onde a estrutura vai ser lida sendo que ela sempre 
+é lida a partir dessa coordenada e vai para os valores positivos
+
+* Variavel nome é uma string do nome do arquivo que vai ser gerado na pasta estruturas do mod 
+que a executa.
+
+* As variaveis largura e altura são valores numéricos para definir as dimensoes da estrutura 
+que o metodo vai ler  para salvar
+
+* Variavel modp é uma string com o caminho do diretório do mod que executa esse metodo
+
+* Variavel silencio é um valor boleano caso queira evitar mensagens no console do servidor 
+(usado para operar de forma sistemica)
+===============================================================================================
+
+
+
+======================================> Criar estrutura <======================================
+Esse metodo é usado para criar estruturas a partir de arquivos de estruturas previamente 
+serializadas pelo mod gestor.
+
+Sintaxe
+gestor.estruturador.carregar(pos, nome, largura, altura, modp, silencio)
+
+* Variaveis pos e nome sao obrigatorias e caso as outros 3 (largura, altura, modp) não sejam 
+definidas, elas serão pesquisadas com base na tabela de estruturas do proprio gestor
+
+* Variavel pos é uma coordenada do ponto onde a estrutura vai ser montada sendo que ela sempre 
+é montada a partir dessa coordenada e vai para os valores positivos
+
+* Variavel nome é uma string para um nome do arquivo da estrutura serializada que deve 
+obrigatóriamente estar em uma pasta chamada estruturas dentro da pasta do mod que usar esse 
+metodo
+
+* As variaveis largura e altura são valores numéricos para definir as dimensoes da estrutura 
+que o metodo vai montar
+
+* Variavel modp é uma string com o caminho do diretório do mod que executa esse metodo
+
+* Variavel silencio é um valor boleano caso queira evitar mensagens no console do servidor 
+(usado para operar de forma sistemica)
+===============================================================================================
+
+
+
+======================================> Proteger  Areas <======================================
+Esse metodo protege uma area e caso ocorra alguma falha ao proteger uma area ele retorna uma 
+string explicando a falha e caso de tudo certo ele retorna boleano verdadeiro (true)
+
+Sintaxe
+gestor.proteger_area(NomeAdmin, NomeDono, NomeArea, pos1, pos2, silencio)
+
+* Todas as variaveis sao obrigatorias
+
+* Variavel NomeAdmin deve ser string do nome de um jogador com privilegios para registrar areas
+
+* Variavel NomeDono deve ser string do nome de um jogador que vai poder interagir na area e 
+adicionar uma subarea para outro jogador
+
+* Variavel NomeArea deve ser string de uma nome qualquer para a area criada e vai aparecer na 
+lista de areas com esse nome (pode ser um nome igual ao de outras areas)
+
+* As variaveis pos1 e pos2 são tabelas de vetores de cordenadas ({x,y,z}) que delimitam a area 
+a ser protegida (tanto faz qual tem o menor valor de x, y ou z)
+
+* Variavel silencio é um valor boleano caso queira evitar mensagens no console do servidor 
+(usado para operar de forma sistemica)
+===============================================================================================
