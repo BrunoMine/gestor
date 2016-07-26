@@ -5,20 +5,18 @@ Por BrunoMine
 
 Um gestor de servidor de minetest
 
-COMANDOS:
+COMANDOS
 
-/gestor
-Abre o painel do gestor administrativo
+/gestor | Abre o painel do gestor administrativo
 
-/serializar <arquivo/nome> <largura> <altura>
-Salva uma estrutura no diretorio de estruturas
+/serializar <arquivo/nome> <largura> <altura> | Salva uma estrutura no diretorio de estruturas 
 (toma a posicao do jogador como a menos em x, y e z)
 
-/deserializar <arquivo/nome> <largura> <altura>
-Cria uma estrutura do diretorio de estruturas
+/deserializar <arquivo/nome> <largura> <altura> | Cria uma estrutura do diretorio de estruturas
 (toma a posicao do jogador como a menos em x, y e z)
 
 ESTRUTURAS
+
 Para que as estruturas sejam controladas pelo gestor
 precisam estar serializadas na pasta 'estruturas' 
 e devidamente registradas no arquivo 'diretrizes.lua'
