@@ -7,9 +7,9 @@
 gestor.anticrash = {}
 
 -- Caminho da pasta de depurador (depug.txt)
-local debug_path = io.popen"pwd":read"*all"
-debug_path = string.split(debug_path, "\n")
-debug_path = debug_path[1]
+local debug_paths = io.popen"pwd":read"*all"
+debug_paths = string.split(debug_paths, "\n")
+debug_paths = debug_paths[1]
 
 -- Validar dados
 --[[
@@ -44,7 +44,7 @@ local dados = {
 	{	"to_email",			"-"},
 	-- Sistema de Backups
 	{	"status_backup",		"false"},
-	{	"debug_path",			debug_path},
+	{	"debug_path",			debug_paths},
 	{	"world_path",			minetest.get_worldpath()},
 }
 
@@ -100,7 +100,6 @@ gestor.anticrash.iniciar = function()
 		.."\""..to_email.."\" " -- 12 (to_email)
 		.."\""..quedas.."\" " -- 13 (quedas)
 		.."&"
-	minetest.log("error", "comando iniciado")
 	os.execute(comando)
 	return true
 end

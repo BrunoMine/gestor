@@ -12,7 +12,7 @@
 
 # Intervalo de verificação
 interval=$1 #PADRÃO: 300 segundos (5 minutos)
-quedas=$13 # Vezes que o servidor pode cair seguidamente
+quedas=${13} # Vezes que o servidor pode cair seguidamente
 
 # Nome do processo
 processo=$2 #"minetest --server"
@@ -33,9 +33,9 @@ from_email=$6 #"gestorminemacro@gmail.com" # Endereço de origem que envia email
 from_login=$7 #"gestorminemacro@gmail.com" # Loggin do email de origem
 from_senha=$8 #"minemacro123" # Senha do email de origem
 from_smtp=$9 #"smtp.gmail.com:587" # Protocolo de SMTP do seu servidor de email
-from_subject="[$(date '+%Y-%m-%d %H:%M:%S')] "$10 # Titulo do email que será enviado
-from_text=$11 #"O servidor saiu" # Texto do corpo da mensagem de email enviada
-to_email=$12 #"borgesdossantosbruno@gmail.com" # Endereço de destinatário que recebe email
+from_subject="[$(date '+%Y-%m-%d %H:%M:%S')] "${10} # Titulo do email que será enviado
+from_text=${11} #"O servidor saiu" # Texto do corpo da mensagem de email enviada
+to_email=${12} #"borgesdossantosbruno@gmail.com" # Endereço de destinatário que recebe email
 
 echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Iniciando verificação de processo '$processo' a cada $interval segundos..."
 
@@ -57,6 +57,7 @@ while [ true == true ]; do
 		echo -e "[\033[01;32m$quando\033[00;00m] Reativando servidor de minetest ..."
 		#$comando_abertura &
 	fi
-	#echo "aguardando $interval segundos"
+	
+	echo "aguardando $interval segundos"
 	sleep $interval
 done
