@@ -11,30 +11,30 @@
 #####################################################
 
 # Intervalo de verificação
-interval=300 #PADRÃO: 300 segundos (5 minutos)
+interval=$1 #PADRÃO: 300 segundos (5 minutos)
 
 # Nome do processo
-processo="minetest --server"
+processo=$2 #"minetest --server"
 
 # Comando de abertura do servidor 
 # Use o comando '~$ minetest --help' 
 # para saber os parâmetros válidos
-comando_abertura="./../../bin/minetest --server"
+comando_abertura=$3 #"./../../bin/minetest --server"
 
 # Caminho de depuração (debug.txt)
-debug_path="./../../bin" 
+debug_path=$4 "./../../bin" 
 
 # Caminho do diretório do mundo
-world_path="./../../worlds/minemacro"
+world_path=$5 "./../../worlds/minemacro"
 
 # Variáveis de Email
-from_email="gestorminemacro@gmail.com" # Endereço de origem que envia email
-from_login="gestorminemacro@gmail.com" # Loggin do email de origem
-from_senha="minemacro123" # Senha do email de origem
-from_smtp="smtp.gmail.com:587" # Protocolo de SMTP do seu servidor de email
-from_subject="[$(date '+%Y-%m-%d %H:%M:%S')] Servidor reiniciado! " # Titulo do email que será enviado
-to_email="borgesdossantosbruno@gmail.com" # Endereço de destinatário que recebe email
-
+from_email=$6 #"gestorminemacro@gmail.com" # Endereço de origem que envia email
+from_login=$7 #"gestorminemacro@gmail.com" # Loggin do email de origem
+from_senha=$8 #"minemacro123" # Senha do email de origem
+from_smtp=$9 #"smtp.gmail.com:587" # Protocolo de SMTP do seu servidor de email
+from_subject="[$(date '+%Y-%m-%d %H:%M:%S')] "$10 # Titulo do email que será enviado
+from_text=$11 #"O servidor saiu" # Texto do corpo da mensagem de email enviada
+to_email=$12 #"borgesdossantosbruno@gmail.com" # Endereço de destinatário que recebe email
 
 echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Iniciando verificação de processo '$processo' a cada $interval segundos..."
 
@@ -50,8 +50,13 @@ while [ true == true ]; do
 		#7z a "$world_path ($quando).7z" "$world_path"
 		tar -czf "$world_path($quando).tar.gz" "$world_path"
 
+<<<<<<< .mine
+		echo -e "[\033[01;32m$quando\033[00;00m] Enviando relatório para '$to_email'..."
+		sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "$from_text" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
+=======
 		echo -e "[\033[01;32m$quando\033[00;00m] Enviando relatório para '$to_email'..."
 		sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "O servidor Minemacro crashou" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
+>>>>>>> .r9
 
 		echo -e "[\033[01;32m$quando\033[00;00m] Reativando servidor de minetest ..."
 		#$comando_abertura &
