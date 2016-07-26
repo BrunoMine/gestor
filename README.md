@@ -1,11 +1,11 @@
-gestor
+Gestor
 ======
 
 Por BrunoMine
 
 Um gestor de servidor de minetest
 
-# COMANDOS:
+COMANDOS:
 
 /gestor
 Abre o painel do gestor administrativo
@@ -18,7 +18,7 @@ Salva uma estrutura no diretorio de estruturas
 Cria uma estrutura do diretorio de estruturas
 (toma a posicao do jogador como a menos em x, y e z)
 
-# ESTRUTURAS
+ESTRUTURAS
 Para que as estruturas sejam controladas pelo gestor
 precisam estar serializadas na pasta 'estruturas' 
 e devidamente registradas no arquivo 'diretrizes.lua'
