@@ -1,13 +1,15 @@
 #!/bin/bash
 
 #####################################################
-############## SCRIPT ANTICRASH v1.0 ################
-#####################################################
-## LICENÇA: LGPL                                   ##
-#####################################################
-## Por ##############################################
+## SCRIPT ANTICRASH v1.0 Copyright (C) 2016        ##
+## LICENÇA: LGPL v3.0                              ##
+## Por                                             ##
 ## Lunovox <lunovox@openmailbox.org>               ##
 ## BrunoMine <borgesdossantosbruno@gmail.com>      ##
+#####################################################
+## Recebeste uma cópia da GNU Lesser General       ##
+## Public License junto com esse software.         ##
+## Se não, veja em <http://www.gnu.org/licenses/>. ##
 #####################################################
 
 # Aviso de autenticidade dos dados
@@ -59,14 +61,15 @@ if [ $(cat "$dados_path"/status) == on ]; then
 	exit
 fi
 
-echo "#######################################################"
-echo "#  ___  _     _____v1.0   ___  ___   ___   ___        #"
-echo "# |   | |\  |   |    |   |    |   \ |   | |     |   | #"
-echo "# |___| | \ |   |    |   |    |___/ |___| \___  |___| #"
-echo "# |   | |  \|   |    |   |___ |   \ |   |  ___| |   | #"
-echo "#######################################################"
-
-echo "on" > "$dados_path"/status_anticrash # Anticrash ativado
+echo "###########################################################"
+echo "##   ___  _     _____       ___  ___   ___   ___   v1.0  ##"
+echo "##  |   | |\  |   |    |   |    |   \ |   | |     |   |  ##"
+echo "##  |___| | \ |   |    |   |    |___/ |___| \___  |___|  ##"
+echo "##  |   | |  \|   |    |   |___ |   \ |   |  ___| |   |  ##"
+echo "###########################################################"
+echo "## Gestor  Copyright (C)  2016.                          ##"
+echo "## Esse programa não tem ABSOLUTAMENTE NENHUMA GARANTIA. ##"
+echo "###########################################################"
 
 # Abre o servidor normalmente
 echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Abrindo servidor..."
