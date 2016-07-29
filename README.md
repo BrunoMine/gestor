@@ -31,13 +31,19 @@ c cidilha e outros.
 
 ANTICRASH
 
-O sistema anticrash funciona de maneira indempendete 
-do servidor no entanto os dados que ele utiliza sao 
+O sistema anticrash funciona de maneira independete 
+do servidor no entanto os dados que ele utiliza sãoo 
 atualizados quando o servidor inicia portanto sempre 
 abra o servidor no mundo desejado uma vez antes de 
 iniciar o anticrash (apenas quando tiver mudado de 
-lugar ou renomeado um diretorio onde do dervidor de 
-minetest incluindo passta do mundo). O anticrash deve 
-abrir o servidor portanto apenas execute os comandos 
-de ligamento do anticrash com o servidor desligado.
-(comandos ficam no painel administrativo ingame)
+lugar ou renomeado um diretorio do servidor de 
+minetest incluindo a pasta do mundo). O anticrash deve 
+abrir o servidor portanto apenas execute o arquivo 
+gestor-anticrash-minetest.sh a partir de qualquer lugar
+no entanto recomenda-se fazer isso apartir da pasta bin 
+do minetest pois o arquivo de depuração (debug.txt) 
+vai aparecer lá (exemplos de comandos ficam no painel 
+administrativo ingame).
+Lembre de rodar esse anticrash em segundo plano para 
+poder fechar o terminal e deixar o anticrash rodando 
+normalmente.
