@@ -59,16 +59,17 @@ if [ $(cat "$dados_path"/status) == on ]; then
 	exit
 fi
 
-echo "  ___  _     _____v1.0   ___  ___   ___   ___        "
-echo " |   | |\  |   |    |   |    |   | |   | |     |   | "
-echo " |___| | \ |   |    |   |    |___/ |___| \___  |___| "
-echo " |   | |  \|   |    |   |___ |   \ |   |  ___| |   | "
+echo "#######################################################"
+echo "#  ___  _     _____v1.0   ___  ___   ___   ___        #"
+echo "# |   | |\  |   |    |   |    |   \ |   | |     |   | #"
+echo "# |___| | \ |   |    |   |    |___/ |___| \___  |___| #"
+echo "# |   | |  \|   |    |   |___ |   \ |   |  ___| |   | #"
+echo "#######################################################"
 
 echo "on" > "$dados_path"/status_anticrash # Anticrash ativado
 
 # Abre o servidor normalmente
 echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Abrindo servidor..."
-cd "$bin"
 echo $bin_args
 nohup $bin_args > /dev/null &
 
