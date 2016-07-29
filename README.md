@@ -38,12 +38,10 @@ abra o servidor no mundo desejado uma vez antes de
 iniciar o anticrash (apenas quando tiver mudado de 
 lugar ou renomeado um diretorio do servidor de 
 minetest incluindo a pasta do mundo). O anticrash deve 
-abrir o servidor portanto apenas execute o arquivo 
-gestor-anticrash-minetest.sh a partir de qualquer lugar
-no entanto recomenda-se fazer isso apartir da pasta bin 
-do minetest pois o arquivo de depuração (debug.txt) 
-vai aparecer lá (exemplos de comandos ficam no painel 
-administrativo ingame).
+abrir o servidor e deve ser execute o arquivo 
+gestor-anticrash-minetest.sh a partir de qualquer da 
+pasta bin do minetest (exemplos de comandos ficam no 
+painel administrativo ingame).
 Lembre de rodar esse anticrash em segundo plano para 
 poder fechar o terminal e deixar o anticrash rodando 
 normalmente.
