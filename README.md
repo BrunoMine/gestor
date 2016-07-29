@@ -1,5 +1,5 @@
-Gestor
-======
+Gestor v1.0
+===========
 
 Por BrunoMine
 
@@ -28,3 +28,16 @@ No nome do arquivo da estrutura deve-se tomar cuidado e
 jamais usar sempre usar "_" (sublinhado/underline) no
 lugar de espaço e evitar caracteres especiais como
 c cidilha e outros.
+
+ANTICRASH
+
+O sistema anticrash funciona de maneira indempendete 
+do servidor no entanto os dados que ele utiliza sao 
+atualizados quando o servidor inicia portanto sempre 
+abra o servidor no mundo desejado uma vez antes de 
+iniciar o anticrash (apenas quando tiver mudado de 
+lugar ou renomeado um diretorio onde do dervidor de 
+minetest incluindo passta do mundo). O anticrash deve 
+abrir o servidor portanto apenas execute os comandos 
+de ligamento do anticrash com o servidor desligado.
+(comandos ficam no painel administrativo ingame)

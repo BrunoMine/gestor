@@ -7,9 +7,19 @@
 gestor.anticrash = {}
 
 -- Caminho da pasta de depurador (depug.txt)
-local debug_paths = io.popen"pwd":read"*all"
-debug_paths = string.split(debug_paths, "\n")
-debug_paths = debug_paths[1]
+local debug_path = io.popen"pwd":read"*all"
+debug_path = string.split(debug_path, "\n")
+debug_path = debug_path[1]
+
+-- Caminho do mod
+local modpath = minetest.get_modpath("gestor")
+
+-- Caminho da pasta do executavel (minetest) orientado pela pasta do mod
+local bin_path = modpath.."/../../bin"
+
+-- Nome do mundo
+local worldname = string.split(minetest.get_worldpath(), "worlds/")
+worldname = worldname[table.maxn(worldname)]
 
 -- Validar dados
 --[[
@@ -17,7 +27,6 @@ debug_paths = debug_paths[1]
 	cria-los com valor padrão para que
 	estejam disponiveis
   ]]
-
 local verificar_dado = function(dado, padrao)
 	if gestor.bd:verif("anticrash", dado) ~= true then
 		gestor.bd:salvar("anticrash", dado, padrao)
@@ -28,80 +37,54 @@ end
 local dados = {
 	-- 	Dados				Valor padrao
 	-- Sistema AntCrash
-	{	"comando_abertura",		"./../../bin/minetest --server"},
-	{	"bin_path",			"-"},
+	{	"bin_path",			"./../../bin"},
+	{	"bin_args",			"./minetest --server --worldname "..worldname},
 	{	"interval",			"300"},
-	{	"quedas",				"5"},
+	{	"quedas",				"2"},
 	-- Sistema de Email
 	{	"status_email",		"false"},
 	{	"from_email",			"-"},
 	{	"from_login",			"-"},
-	--{	"from_senha",			""},
 	{	"from_smtp",			"-"},
 	{	"from_smtp_port",		"-"},
 	{	"from_subject",		"Servidor reiniciado!"},
 	{	"from_text",			"Texto"},
+	{	"from_subject_em",		"ALERTA Servidor inoperante"},
+	{	"from_text_em",		"O servidor cai muito rapidamente. Anticrash foi interrompido para evitar danos"},
 	{	"to_email",			"-"},
 	-- Sistema de Backups
 	{	"status_backup",		"false"},
-	{	"debug_path",			debug_paths},
+	{	"debug_path",			debug_path},
 	{	"world_path",			minetest.get_worldpath()},
 }
 
--- Verifica todos os cados
+-- Verifica todos os dados
 for _, v in ipairs(dados) do
 	verificar_dado(v[1], v[2])
 end
 
--- Iniciar anticrash
-gestor.anticrash.iniciar = function()
-	local comando_abertura = gestor.bd:pegar("anticrash", "comando_abertura") or ""
-	local processo = gestor.bd:pegar("anticrash", "processo") or ""
-	local interval = gestor.bd:pegar("anticrash", "interval") or ""
-	local from_email = gestor.bd:pegar("anticrash", "from_email") or ""
-	local from_login = gestor.bd:pegar("anticrash", "from_login") or ""
-	local from_senha = gestor.bd:pegar("anticrash", "from_senha") or ""
-	local from_smtp = gestor.bd:pegar("anticrash", "from_smtp") or ""
-	local from_subject = gestor.bd:pegar("anticrash", "from_subject") or ""
-	local from_text = gestor.bd:pegar("anticrash", "from_text") or ""
-	local to_email = gestor.bd:pegar("anticrash", "to_email") or ""
-	local world_path = gestor.bd:pegar("anticrash", "world_path") or ""
-	local bin_path = gestor.bd:pegar("anticrash", "bin_path") or ""
-	local debug_path = gestor.bd:pegar("anticrash", "debug_path") or ""
-	local quedas = gestor.bd:pegar("anticrash", "quedas") or ""
-	
-	-- Verificar sistema de email
-	if gestor.bd:pegar("anticrash", "status_email") == "false" then
-		from_email = ""
-	end
-	
-	-- Verificar sistema de backup
-	if gestor.bd:pegar("anticrash", "status_backup") == "false" then
-		debug_path = ""
-	end
-	
-	-- Verificar dados obrigatorios
-	if interval == "" or processo == "" or comando_abertura == "" then
-		return false
-	end
-	
-	local comando = "\""..minetest.get_modpath("gestor").."/./anticrash.sh\" "
-		.."\""..interval.."\" " -- 1 (interval)
-		.."\""..processo.."\" " -- 2 (processo)
-		.."\""..bin_path.."/./"..comando_abertura.."\" " -- 3 (comando_abertura)
-		.."\""..debug_path.."\" " -- 4 (debug_path)
-		.."\""..world_path.."\" " -- 5 (world_path)
-		.."\""..from_email.."\" " -- 6 (from_email)
-		.."\""..from_login.."\" " -- 7 (from_login)
-		.."\""..from_senha.."\" " -- 8 (from_senha)
-		.."\""..from_smtp.."\" " -- 9 (from_smtp)
-		.."\""..from_subject.."\" " -- 10 (from_subject)
-		.."\""..from_text.."\" " -- 11 (from_text)
-		.."\""..to_email.."\" " -- 12 (to_email)
-		.."\""..quedas.."\" " -- 13 (quedas)
-		.."&"
-	os.execute(comando)
-	return true
+-- Salvar um valor para o antcrash
+gestor.anticrash.serializar = function(dado, valor)
+	if not dado or not valor then return end
+	os.execute("echo \""..valor.."\" > "..string.gsub(modpath, " ", "\\ ").."/dados/"..dado)
 end
 
+-- Salva todos os dados para o shell
+gestor.anticrash.salvar_dados = function()
+	for _, v in ipairs(dados) do
+		gestor.anticrash.serializar(v[1], gestor.bd:pegar("anticrash", v[1]))
+	end
+	if gestor.bd:verif("anticrash", "from_senha") then -- separada
+		gestor.anticrash.serializar("from_senha", gestor.bd:pegar("anticrash", "from_senha"))
+	end 
+end
+
+-- Atualiza os dados salvos por garantia
+gestor.anticrash.salvar_dados()
+
+-- Parar anticrash
+minetest.register_on_shutdown(function()
+	gestor.anticrash.serializar("status", "off")
+end)
+gestor.anticrash.serializar("status", "on") -- liga durante o ligamento do servidor
 

@@ -1,5 +1,5 @@
 --
--- Mod gestor
+-- Mod gestor 1.0
 --
 -- Inicializador
 --

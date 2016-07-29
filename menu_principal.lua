@@ -8,6 +8,9 @@ local escolha_local_avulso = {}
 
 local escolha_vila = memor.online()
 
+-- Caminho do mod
+local modpath = minetest.get_modpath("gestor")
+
 -- Desordenar tabela
 local desordenar = function(tb)
 	local ntb = {}
@@ -15,6 +18,15 @@ local desordenar = function(tb)
 		ntb[d] = {}
 	end
 	return ntb
+end
+
+-- Lista-string configurada altomaticamente
+gestor.lista_vilas = ""
+local i = 1
+while (gestor.vilas[i]~=nil) do
+	gestor.lista_vilas = gestor.lista_vilas..gestor.vilas[i]
+	if i < table.maxn(gestor.vilas) then gestor.lista_vilas = gestor.lista_vilas .. "," end
+	i = i + 1
 end
 
 -- Abrir Menu principal
@@ -108,12 +120,12 @@ gestor.menu_principal = function(name, inicio)
 		local status_backup = "1"
 		if gestor.bd:pegar("anticrash", "status_backup") == "true"  then status_backup = "2" end
 		
-		
+		--[[
 		local bin_paths = io.popen"locate bin/minetest":read"*all"
 		bin_paths = string.gsub(bin_paths, "bin/minetest", "bin")
 		bin_paths = string.gsub(bin_paths, "\n", ",")
 		local path_selecionado = gestor.bd:pegar("anticrash", "bin_path") or "-"
-		
+		]]
 		local comando_selecionado = 1
 		local co = gestor.bd:pegar("anticrash", "comando_abertura")
 		for n, c in ipairs(string.split("minetest --server,minetestserver", ",")) do
@@ -125,16 +137,12 @@ gestor.menu_principal = function(name, inicio)
 		
 		formspec = formspec
 			.."label[4,1;AntiCrash]"
-			.."button[10.6,1.5;3,1;salvar;Salvar Dados]"
 			-- Sistema Verificador AntiCrash
 			.."label[4,2;Sistema Verificador AntiCrash]"
-			.."button[4,2.7;2,1;iniciar;Iniciar]"
-			.."label[6,2.35;Comando de abertura]"
-			.."dropdown[6,2.75;4.2,1;comando_abertura;minetest --server,minetestserver;"..comando_selecionado.."]"
-			.."label[4,3.4;Caminho para pasta do executavel do servidor]"
-			.."dropdown[4,3.8;10.2,1;bin_path;"..path_selecionado..","..bin_paths..";1]"
-			.."field[10.4,3;1.6,1;quedas;Quedas;"..gestor.bd:pegar("anticrash", "quedas").."]"
-			.."field[12,3;1.9,1;interval;Intervalo;"..gestor.bd:pegar("anticrash", "interval").."]"
+			.."button[4,2.6;3,1;salvar;Salvar Dados]"
+			.."field[7.4,3;3.2,1;quedas;Lim. quedas seguidas;"..gestor.bd:pegar("anticrash", "quedas").."]"
+			.."field[10.6,3;3.3,1;interval;Intervalo de verif. (s);"..gestor.bd:pegar("anticrash", "interval").."]"
+			.."textarea[4.3,3.8;9.6,1.5;comando;Comando de abertura do servidor (digite no terminal UNIX);$ cd \""..string.gsub(modpath, " ", " ").."\"\n$ ./../mod/gestor/./gestor-anticrash-minetest.sh]"
 			-- Sistema Notificador via Email
 			.."label[4,5;Sistema Notificador via Email]"
 			.."label[4,5.4;Estado]"
@@ -274,35 +282,27 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			if fields.salvar then
 				
 				-- Salvar dados gerais
-				if fields.processo == "" then fields.processo = "-" end
-				if fields.comando_abertura == "" then fields.comando_abertura = "-" end
 				if fields.from_email == "" then fields.from_email = "-" end
 				if fields.from_login == "" then fields.from_login = "-" end
 				if fields.from_smtp == "" then fields.from_smtp = "-" end
 				if fields.from_smtp_port == "" then fields.from_smtp_port = "-" end
 				if fields.from_subject == "" then fields.from_subject = "-" end
 				if fields.to_email == "" then fields.to_email = "-" end
-				if fields.bin_path == "" then fields.bin_path = "-" end
 				if fields.quedas == "" or not tonumber(fields.quedas) then fields.quedas = "5" end
-				gestor.bd:salvar("anticrash", "processo", fields.comando_abertura)
-				gestor.bd:salvar("anticrash", "comando_abertura", fields.comando_abertura)
+				if fields.interval == "" or not tonumber(fields.interval) then fields.interval = "300" end
 				gestor.bd:salvar("anticrash", "from_email", fields.from_email)
 				gestor.bd:salvar("anticrash", "from_login", fields.from_login)
 				gestor.bd:salvar("anticrash", "from_smtp", fields.from_smtp)
 				gestor.bd:salvar("anticrash", "from_smtp_port", fields.from_smtp_port)
 				gestor.bd:salvar("anticrash", "from_subject", fields.from_subject)
 				gestor.bd:salvar("anticrash", "to_email", fields.to_email)
-				gestor.bd:salvar("anticrash", "bin_path", fields.bin_path)
 				gestor.bd:salvar("anticrash", "quedas", fields.quedas)
+				gestor.bd:salvar("anticrash", "interval", fields.interval)
 				if fields.from_senha ~= "" then
 					gestor.bd:salvar("anticrash", "from_senha", fields.from_senha)
 				end
-				
-				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-					default.gui_bg..
-					default.gui_bg_img..
-					"label[0,0;AVISO\nTodos os dados \nforam salvos com \nsucesso]"
-				)
+				-- Salva todos os dados para o shell
+				gestor.anticrash.salvar_dados()
 				
 				-- Verificar sistema de email
 				if fields.status_email == "Ativo" then
@@ -337,6 +337,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 					end 
 						
 					gestor.bd:salvar("anticrash", "status_email", "true")
+				else
+					gestor.bd:salvar("anticrash", "status_email", "false")
 				end
 				
 				-- Verificar sistema de backup
@@ -355,31 +357,19 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 					end 
 						
 					gestor.bd:salvar("anticrash", "status_backup", "true")
+				else
+					gestor.bd:salvar("anticrash", "status_backup", "false")
 				end
+				
+				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+					default.gui_bg..
+					default.gui_bg_img..
+					"label[0,0;DADOS SALVOS \nTodos os dados foram \nsalvos com sucesso]"
+				)
 				
 				minetest.after(2, gestor.menu_principal, name)
 				return
 			
-			elseif fields.iniciar then
-				if gestor.bd:pegar("anticrash", "bin_path") == "-"
-					or gestor.bd:pegar("anticrash", "bin_path") == "-"
-				then
-					minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-						default.gui_bg..
-						default.gui_bg_img..
-						"label[0,0;AVISO \nFaltam alguns dados\npara iniciar o anticrash \ncorretamente]"
-					)
-					minetest.after(2, gestor.menu_principal, name)
-					return
-				end
-				gestor.anticrash.iniciar()
-				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-						default.gui_bg..
-						default.gui_bg_img..
-						"label[0,0;AVISO \nO anticrash foi iniciado ]"
-					)
-				minetest.after(2, gestor.menu_principal, name)
-				return
 			elseif fields.testar_email then
 				if gestor.bd:pegar("anticrash", "status_email") == "false" then
 					minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
@@ -458,6 +448,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			-- Finalizando
 			player:moveto(n_spawn)
 			minetest.chat_send_player(name, "Centro construido e parcialmente definido. Configure a loja principal e o banco apenas. Recomendavel redefinir o spawn.")
+			
 		end
 		if fields.cancelar then
 			gestor.menu_principal(name)

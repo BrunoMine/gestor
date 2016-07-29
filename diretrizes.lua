@@ -21,15 +21,4 @@ gestor.vilas = {
 }
 
 
--- Lista-string configurada altomaticamente
-gestor.lista_vilas = ""
-local i = 1
-while (gestor.vilas[i]~=nil) do
-	gestor.lista_vilas = gestor.lista_vilas..gestor.vilas[i]
-	if i < table.maxn(gestor.vilas) then gestor.lista_vilas = gestor.lista_vilas .. "," end
-	i = i + 1
-end
--- Variavel de registros
-gestor.registros = {}
-
 

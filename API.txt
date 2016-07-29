@@ -109,8 +109,9 @@ que o metodo vai montar
 
 
 ======================================> Proteger  Areas <======================================
-Esse metodo protege uma area e caso ocorra alguma falha ao proteger uma area ele retorna uma 
-string explicando a falha e caso de tudo certo ele retorna boleano verdadeiro (true)
+Primeiramente esse metodo precisa so funciona com mod areas. Esse metodo protege uma area e 
+caso ocorra alguma falha ao proteger uma area ele retorna uma string explicando a falha e caso 
+de tudo certo ele retorna boleano verdadeiro (true)
 
 Sintaxe
 gestor.proteger_area(NomeAdmin, NomeDono, NomeArea, pos1, pos2, silencio)
