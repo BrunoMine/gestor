@@ -12,7 +12,7 @@
 -- Proteger uma area
 gestor.proteger_area = function(name, PlayerName, AreaName, pos1, pos2, silencio)
 	if not tostring(PlayerName) or not tostring(AreaName) then return "Faltam argumentos ou estao incorretos" end
-	if not areas or not area.add then "Faltou mod areas" end
+	if not areas or not area.add then return "Faltou mod areas" end
 	local param = tostring(PlayerName).." "..tostring(AreaName)
 	local found, _, ownername, areaname = param:find('^([^ ]+) (.+)$')
 
