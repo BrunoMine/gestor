@@ -12,9 +12,6 @@
 ## Se não, veja em <http://www.gnu.org/licenses/>. ##
 #####################################################
 
-# Aviso de autenticidade dos dados
-echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Para evitar erros nesse anticrash, abra e feche o servidor (no mundo desejado) normalmente uma vez para atualizar dados (para o caso de troca de diretorios e/ou nomes)"
-
 # Caminho para dados do mod
 dados_path="./../mods/gestor/dados"
 
@@ -55,27 +52,35 @@ from_text_em=$(cat "$dados_path"/from_text_em)
 status_email=$(cat "$dados_path"/status_email) # Se o sistema de email deve funcionar
 status_backup=$(cat "$dados_path"/status_backup) # Se o sistema de email deve funcionar
 
+# AVISO de autenticidade dos dados
+echo -e "\033[01;34m###_AVISO_#################################################\033[00;00m"
+echo "Para evitar erros nesse anticrash, abra e feche o servidor (no mundo desejado) normalmente uma vez para atualizar dados (para o caso de troca de diretorios e/ou nomes)"
+
 # Verifica se ja esta aberto
 if [ $(cat "$dados_path"/status) == on ]; then
-	echo "Falha. Servidor ja foi aberto (feche o servidor e tente novamente, ou abra e feche o servidor e tente novamente)..."
+	echo -e "\033[01;31m###_ERRO_##################################################\033[00;00m"
+	echo "Servidor ja foi aberto (feche o servidor e tente novamente, ou abra e feche o servidor e tente novamente)..."
 	exit
 fi
 
-echo "###########################################################"
-echo "##   ___  _     _____       ___  ___   ___   ___   v1.0  ##"
-echo "##  |   | |\  |   |    |   |    |   \ |   | |     |   |  ##"
-echo "##  |___| | \ |   |    |   |    |___/ |___| \___  |___|  ##"
-echo "##  |   | |  \|   |    |   |___ |   \ |   |  ___| |   |  ##"
-echo "###########################################################"
-echo "## Gestor  Copyright (C)  2016.                          ##"
-echo "## Esse programa não tem ABSOLUTAMENTE NENHUMA GARANTIA. ##"
-echo "###########################################################"
+echo -e "\033[01;35m###########################################################\033[00;00m"
+echo -e "\033[01;35m##   ___  _     _____       ___  ___   ___   ___   v1.0  ##\033[00;00m"
+echo -e "\033[01;35m##  |   | |\  |   |    |   |    |   \ |   | |     |   |  ##\033[00;00m"
+echo -e "\033[01;35m##  |___| | \ |   |    |   |    |___/ |___| \___  |___|  ##\033[00;00m"
+echo -e "\033[01;35m##  |   | |  \|   |    |   |___ |   \ |   |  ___| |   |  ##\033[00;00m"
+echo -e "\033[01;35m###########################################################\033[00;00m"
+echo -e "\033[01;35m## Gestor  Copyright (C)  2016.                          ##\033[00;00m"
+echo -e "\033[01;35m## Esse programa não tem ABSOLUTAMENTE NENHUMA GARANTIA. ##\033[00;00m"
+echo -e "\033[01;35m###########################################################\033[00;00m"
 
-# Abre o servidor normalmente
-echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Abrindo servidor..."
-echo $bin_args
+# INFO Abre o servidor normalmente
+echo -e "\033[01;32m###_INFO_##################################################\033[00;00m"
+echo "Abrindo servidor..."
 nohup $bin_args > /dev/null &
 
+
+# INFO Inicia loopde verificação
+echo -e "\033[01;32m###_INFO_##################################################\033[00;00m"
 echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Iniciando verificação de processo '$processo' a cada $interval segundos..."
 
 quedas=0 # contador de quedas
@@ -88,43 +93,50 @@ while [ true == true ]; do
 		
 		# Verificar se o servidor desligou corretamente
 		if [ $(cat "$dados_path"/status) == off ]; then
-			echo -e "[\033[01;32m$(date '+%Y-%m-%d %H:%M:%S')\033[00;00m] Servidor foi desligado normalmente..."
+			echo -e "[\033[01;32m$quando\033[00;00m] Servidor foi desligado normalmente..."
 			echo "Desligando anticrash..."
 			break
 		fi
 		
+		# Servidor parou abruptamente
+		echo -e "\033[01;32m###_INFO_##################################################\033[00;00m"
 		echo -e "[\033[01;32m$quando\033[00;00m] Servidor parou abruptamente (ou de modo inconveniente)..."
 		
 		# Soma ao contador de quedas
 		let quedas++
 		
+		# Renomeia arquivo de depuração
 		echo "Renomenado 'debug.txt' para 'debug ($quando).txt'..."
-		mv "$debug_path/debug.txt" "$debug_path/debug ($quando).txt" # Salvando arquivo de depuração
+		mv "$debug_path/debug.txt" "$debug_path/debug ($quando).txt"
 
-		
+		# Faz backup do mundo
 		if [ $status_backup == "true" ]; then
 			echo "Fazendo backup do mapa em '$world_path($quando).tar.gz'..."
-			#7z a "$world_path ($quando).7z" "$world_path"
 			tar -czf "$world_path($quando).tar.gz" "$world_path"
 		fi
 		
 		if [ $quedas -ge $lim_quedas ]; then
-			echo "ALERTA. atingiu o limite de quedas sucessivas."
+			# AVISO Atingiu limite de quedas sucessivas
+			echo -e "\033[01;34m###_AVISO_#################################################\033[00;00m"
+			echo "Atingiu o limite de quedas sucessivas."
 			if [ $status_email == "true" ]; then
+				# Enviando relatorio para email
 				echo "Enviando relatório para '$to_email'..."
 				sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject_em" -m "$from_text_em" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
 			fi
+			# Desligando anticrash
 			echo "Desligando anticrash..."
-			echo "off" > $dados_path/status # servidor desligado
+			echo "off" > $dados_path/status # servidor desligou
 			break
 		else
 			if [ $status_email == "true" ]; then
+				# Enviando relatorio para email
 				echo "Enviando relatório para '$to_email'..."
 				sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "$from_text" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
 			fi
 		fi
 		
-		
+		# Reativando servidor
 		echo "Reativando servidor de minetest ..."
 		nohup $bin_args > /dev/null &
 	
