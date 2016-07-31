@@ -56,12 +56,10 @@ status_backup=$(cat "$dados_path"/status_backup) # Se o sistema de email deve fu
 echo -e "\033[01;34m###_AVISO_#################################################\033[00;00m"
 echo "Para evitar erros nesse anticrash, abra e feche o servidor (no mundo desejado) normalmente uma vez para atualizar dados (para o caso de troca de diretorios e/ou nomes)"
 
-# Verifica se ja esta aberto
-if [ $(cat "$dados_path"/status) == on ]; then
-	echo -e "\033[01;31m###_ERRO_##################################################\033[00;00m"
-	echo "Servidor ja foi aberto (feche o servidor e tente novamente, ou abra e feche o servidor e tente novamente)..."
-	exit
-fi
+# AVISO servidor so pode ser fechado pelo gestor
+echo -e "\033[01;34m###_AVISO_#################################################\033[00;00m"
+echo "Uma vez iniciado o anticrash o servidor pode ser fechado apenas pelo botao de desligamento no painel administrativo do gestor"
+echo "onn" > $dados_path/status # anticrash trabalha
 
 echo -e "\033[01;35m###########################################################\033[00;00m"
 echo -e "\033[01;35m##   ___  _     _____       ___  ___   ___   ___   v1.0  ##\033[00;00m"
@@ -126,7 +124,7 @@ while [ true == true ]; do
 			fi
 			# Desligando anticrash
 			echo "Desligando anticrash..."
-			echo "off" > $dados_path/status # servidor desligou
+			echo "off" > $dados_path/status # anticrash parou
 			break
 		else
 			if [ $status_email == "true" ]; then
