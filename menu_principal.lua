@@ -415,6 +415,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		local name = player:get_player_name()		
 		
 		if fields.ok then
+			gestor.anticrash.serializar("status", "off")
 			minetest.chat_send_all("*** Servidor desligando em 3 segundos. (Por "..name..")")
 			minetest.after(3, minetest.chat_send_all, "*** Servidor Desligado")
 			minetest.after(3, minetest.request_shutdown)
