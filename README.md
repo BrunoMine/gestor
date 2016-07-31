@@ -1,4 +1,4 @@
-Gestor v1.0
+Gestor v1.1
 ===========
 
 Por BrunoMine
