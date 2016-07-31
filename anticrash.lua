@@ -87,9 +87,3 @@ end
 -- Atualiza os dados salvos por garantia
 gestor.anticrash.salvar_dados()
 
--- Parar anticrash
-minetest.register_on_shutdown(function()
-	gestor.anticrash.serializar("status", "off")
-end)
-gestor.anticrash.serializar("status", "on") -- liga durante o ligamento do servidor
-
