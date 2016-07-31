@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-## SCRIPT ANTICRASH v1.0 Copyright (C) 2016        ##
+## SCRIPT ANTICRASH v1.1 Copyright (C) 2016        ##
 ## LICENÇA: LGPL v3.0                              ##
 ## Por                                             ##
 ## Lunovox <lunovox@openmailbox.org>               ##
