@@ -59,3 +59,6 @@ painel administrativo ingame).
 Lembre de rodar esse anticrash em segundo plano para 
 poder fechar o terminal e deixar o anticrash rodando 
 normalmente.
+AVISO. Para desligar o anticrash corretamente apenas
+desligando o servidor pelo painel administrativo do 
+gestor
