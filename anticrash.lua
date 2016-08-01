@@ -11,16 +11,8 @@
 
 gestor.anticrash = {}
 
--- Caminho da pasta de depurador (depug.txt)
-local debug_path = io.popen"pwd":read"*all"
-debug_path = string.split(debug_path, "\n")
-debug_path = debug_path[1]
-
 -- Caminho do mod
 local modpath = minetest.get_modpath("gestor")
-
--- Caminho da pasta do executavel (minetest) orientado pela pasta do mod
-local bin_path = modpath.."/../../bin"
 
 -- Nome do mundo
 local worldname = string.split(minetest.get_worldpath(), "worlds/")
@@ -42,7 +34,6 @@ end
 local dados = {
 	-- 	Dados				Valor padrao
 	-- Sistema AntCrash
-	{	"bin_path",			"./../../bin"},
 	{	"bin_args",			"./minetest --server --worldname "..worldname},
 	{	"interval",			"300"},
 	{	"quedas",				"2"},
@@ -59,7 +50,6 @@ local dados = {
 	{	"to_email",			"-"},
 	-- Sistema de Backups
 	{	"status_backup",		"false"},
-	{	"debug_path",			debug_path},
 	{	"world_path",			minetest.get_worldpath()},
 }
 
@@ -86,4 +76,3 @@ end
 
 -- Atualiza os dados salvos por garantia
 gestor.anticrash.salvar_dados()
-
