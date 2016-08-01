@@ -27,12 +27,6 @@ processo="minetest --server" #"minetest --server"
 # Comando de abertura do servidor 
 bin_args=$(cat "$dados_path"/bin_args)
 
-# Caminho do binario
-bin=$(cat "$dados_path"/bin_path)
-
-# Caminho de depuração (debug.txt)
-debug_path=$(cat "$dados_path"/debug_path)
-
 # Caminho do diretório do mundo
 world_path=$(cat "$dados_path"/world_path)
 
@@ -74,7 +68,7 @@ echo -e "\033[01;35m###########################################################\
 # INFO Abre o servidor normalmente
 echo -e "\033[01;32m###_INFO_##################################################\033[00;00m"
 echo "Abrindo servidor..."
-nohup $bin_args > /dev/null &
+nohup $bin_args >> debug.out &
 
 
 # INFO Inicia loopde verificação
@@ -105,7 +99,7 @@ while [ true == true ]; do
 		
 		# Renomeia arquivo de depuração
 		echo "Renomenado 'debug.txt' para 'debug ($quando).txt'..."
-		mv "$debug_path/debug.txt" "$debug_path/debug ($quando).txt"
+		mv "debug.txt" "debug ($quando).txt"
 
 		# Faz backup do mundo
 		if [ $status_backup == "true" ]; then
@@ -120,7 +114,7 @@ while [ true == true ]; do
 			if [ $status_email == "true" ]; then
 				# Enviando relatorio para email
 				echo "Enviando relatório para '$to_email'..."
-				sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject_em" -m "$from_text_em" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
+				sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject_em" -m "$from_text_em" -o message-charset=UTF-8 -a "debug ($quando).txt"
 			fi
 			# Desligando anticrash
 			echo "Desligando anticrash..."
@@ -130,13 +124,13 @@ while [ true == true ]; do
 			if [ $status_email == "true" ]; then
 				# Enviando relatorio para email
 				echo "Enviando relatório para '$to_email'..."
-				sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "$from_text" -o message-charset=UTF-8 -a "$debug_path/debug ($quando).txt"
+				sendemail -s "$from_smtp" -xu "$from_login" -xp "$from_senha" -f "$from_email" -t "$to_email" -u "$from_subject" -m "$from_text" -o message-charset=UTF-8 -a "debug ($quando).txt"
 			fi
 		fi
 		
 		# Reativando servidor
 		echo "Reativando servidor de minetest ..."
-		nohup $bin_args > /dev/null &
+		nohup $bin_args >> debug.out &
 	
 	else
 		quedas=0 # zerar o contador de quedas apos 1 intervalo/loop sem queda
@@ -144,5 +138,4 @@ while [ true == true ]; do
 	
 	sleep $interval
 done
-
 
