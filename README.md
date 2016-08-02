@@ -46,7 +46,7 @@ c cidilha e outros.
 ANTICRASH
 
 O sistema anticrash funciona de maneira independete 
-do servidor no entanto os dados que ele utiliza sãoo 
+do servidor no entanto os dados que ele utiliza são 
 atualizados quando o servidor inicia portanto sempre 
 abra o servidor no mundo desejado uma vez antes de 
 iniciar o anticrash (apenas quando tiver mudado de 
@@ -61,4 +61,7 @@ poder fechar o terminal e deixar o anticrash rodando
 normalmente.
 AVISO. Para desligar o anticrash corretamente apenas
 desligando o servidor pelo painel administrativo do 
-gestor
+gestor.
+Para o anticrash funcionar corretamente nos 
+diretórios é preciso que o minetest seja RUN_IN_PLACE 
+(roda no local)
