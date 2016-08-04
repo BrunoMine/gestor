@@ -53,7 +53,7 @@ echo "Para evitar erros nesse anticrash, abra e feche o servidor (no mundo desej
 # AVISO servidor so pode ser fechado pelo gestor
 echo -e "\033[01;34m###_AVISO_#################################################\033[00;00m"
 echo "Uma vez iniciado o anticrash o servidor pode ser fechado apenas pelo botao de desligamento no painel administrativo do gestor"
-echo "onn" > $dados_path/status # anticrash trabalha
+echo "on" > $dados_path/status # anticrash trabalha
 
 echo -e "\033[01;35m###########################################################\033[00;00m"
 echo -e "\033[01;35m##   ___  _     _____       ___  ___   ___   ___   v1.1  ##\033[00;00m"
