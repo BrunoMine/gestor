@@ -22,7 +22,8 @@ Geral Menor GNU junto com este programa,
 se não, veja <http://www.gnu.org/licenses/>.
 
 Arte
-  gestor_logo.png | por BrunoMine | CC BY v3
+
+- gestor_logo.png | por BrunoMine | CC BY v3
 
 ## Comandos
 
