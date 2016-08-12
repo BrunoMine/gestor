@@ -5,7 +5,7 @@ Por BrunoMine
 
 Um gestor de servidor de minetest
 
-LICENÇA LGPL v3
+### Licença LGPL v3
 
 Gestor é um software livre; você pode redistribuí-lo e/ou 
 modificá-lo dentro dos termos da Licença Pública Geral Menor GNU 
@@ -19,7 +19,7 @@ Você deve ter recebido uma cópia da Licença Pública
 Geral Menor GNU junto com este programa, 
 se não, veja <http://www.gnu.org/licenses/>.
 
-COMANDOS
+## Comandos
 
 /gestor | Abre o painel do gestor administrativo
 
@@ -29,7 +29,7 @@ COMANDOS
 /deserializar <arquivo/nome> <largura> <altura> | Cria uma estrutura do diretorio de estruturas
 (toma a posicao do jogador como a menos em x, y e z)
 
-ESTRUTURAS
+## Estruturas
 
 Para que as estruturas sejam controladas pelo gestor
 precisam estar serializadas na pasta 'estruturas' 
@@ -43,7 +43,7 @@ jamais usar sempre usar "_" (sublinhado/underline) no
 lugar de espaço e evitar caracteres especiais como
 c cidilha e outros.
 
-ANTICRASH
+## Anticrash
 
 O sistema anticrash funciona de maneira independete 
 do servidor no entanto os dados que ele utiliza são 
