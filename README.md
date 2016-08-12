@@ -5,7 +5,9 @@ Por BrunoMine
 
 Um gestor de servidor de minetest
 
-### Licença LGPL v3
+### Licenças 
+
+Software LGPL v3
 
 Gestor é um software livre; você pode redistribuí-lo e/ou 
 modificá-lo dentro dos termos da Licença Pública Geral Menor GNU 
@@ -18,6 +20,9 @@ Licença Pública Geral Menor GNU para maiores detalhes.
 Você deve ter recebido uma cópia da Licença Pública 
 Geral Menor GNU junto com este programa, 
 se não, veja <http://www.gnu.org/licenses/>.
+
+Arte
+  gestor_logo.png | por BrunoMine | CC BY v3
 
 ## Comandos
 
