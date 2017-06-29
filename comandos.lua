@@ -1,13 +1,8 @@
---[[
-	Mod Gestor para Minetest
-	Gestor v1.0 Copyright (C) 2016 BrunoMine (https://github.com/BrunoMine)
-	
-	Recebeste uma cópia da GNU Lesser General
-	Public License junto com esse software,
-	se não, veja em <http://www.gnu.org/licenses/>. 
-	
-	Comandos
-  ]]
+--
+-- Mod gestor
+--
+-- Comandos
+--
 
 -- Comando para exibir tela de gerenciamento
 minetest.register_chatcommand("gestor", {
@@ -24,7 +19,7 @@ minetest.register_chatcommand("gestor", {
 minetest.register_chatcommand("serializar", {
 	privs = {server=true},
 	params = "[<arquivo/nome> <largura> <altura>]",
-	description = "Serializa uma estrutura",
+	description = "Serializa uma estrutura (recomenda-se 10 blocos de profundidade do solo da vila)",
 	func = function(name,  param)
 		local m = string.split(param, " ")
 		local param1, param2, param3 = m[1], m[2], m[3]

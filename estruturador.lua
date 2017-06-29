@@ -1,16 +1,51 @@
---[[
-	Mod Gestor para Minetest
-	Gestor v1.0 Copyright (C) 2016 BrunoMine (https://github.com/BrunoMine)
-	
-	Recebeste uma cópia da GNU Lesser General
-	Public License junto com esse software,
-	se não, veja em <http://www.gnu.org/licenses/>. 
-	
-	Estruturador
-  ]]
+--
+-- Mod gestor
+--
+-- Estruturador
+--
 
--- Diretorio do Mod
-local modpath = minetest.get_modpath("gestor")
+-- Diretorio do Mundo
+local worldpath = minetest.get_worldpath()
+
+-- Nodes que podem ter metadados serializados
+local meta_ok = {
+	"terrenos:livre",
+	"default:sign_wall_wood",
+	"default:sign_wall_steel",
+	"bau_comunitario:bau",
+	"antipvp:placa",
+	"portais:bilheteria",
+	"macromoney:caixa_de_banco",
+}
+
+-- Assegurar pasta de estruturas
+do
+	local list = minetest.get_dir_list(worldpath, true)
+	local r = false
+	for n, ndir in ipairs(list) do
+		if ndir == "gestor" then
+			r = true
+			break
+		end
+	end
+	if r == false then
+		minetest.mkdir(worldpath.."/gestor")
+	end
+	
+	list = minetest.get_dir_list(worldpath.."/gestor", true)
+	r = false
+	for n, ndir in ipairs(list) do
+		if ndir == "estruturas" then
+			r = true
+			break
+		end
+	end
+	if r == false then
+		minetest.mkdir(worldpath.."/gestor/estruturas")
+	end
+	
+end
+
 
 -- Variavel global de estruturador
 gestor.estruturador = {}
@@ -37,184 +72,119 @@ local arredondar = function(pos)
 	return r
 end
 
--- Restaurar as refenrencias em relacao a uma pos
-local restaurar_pos = function(pos, ref)
-	local r = {}
-	r.x, r.y, r.z = (pos.x+ref.x), (pos.y+ref.y), (pos.z+ref.z)
-	return r
-end
-
--- calcular o deslocamento de ref em relacao a pos
-local ref_pos = function(pos, ref)
-	local r = {}
-	r.x, r.y, r.z = (ref.x-pos.x), (ref.y-pos.y), (ref.z-pos.z)
-	return r
-end
-
--- metodo melhorado para pegar nodes (pega nodes ainda nao carregados)
-local function pegar_node(pos)
-	local resp = {}
-	local node = minetest.get_node(pos)
-	if node.name == "ignore" then
-		minetest.get_voxel_manip():read_from_map(pos, pos)
-		node = minetest.get_node(pos)
-	end
-	resp = {node=node}
-	--[[
-		Para salvar os metadados é criada um valor meta (node.meta)
-		para que alguns dados possam ser mantidos de forma serializada 
-		no node e posteriormente serem restaurados quando a estrutura 
-		for restaurada
-	  ]]
-	local meta = minetest.get_meta(pos)
-	if node.name == "placa_terreno:livre" then -- placas de terreno
-		local ref1 = ""
-		local ref2 = ""
-		if meta:get_string("ref1") ~= "" then
-			-- Mantem os antigos ref's caso existam no metadado
-			ref1 = minetest.deserialize(meta:get_string("ref1"))
-			ref2 = minetest.deserialize(meta:get_string("ref2"))
-		else
-			-- Calcula os ref's
-			ref1 = minetest.serialize(ref_pos(pos, minetest.deserialize(meta:get_string("pos1"))))
-			ref2 = minetest.serialize(ref_pos(pos, minetest.deserialize(meta:get_string("pos2"))))
-		end
-		local custo = meta:get_string("custo")
-		local altura = meta:get_string("altura")
-		resp = {node=node,meta={ref1=ref1,ref2=ref2,custo=custo,altura=altura}}
-	elseif node.name == "default:sign_wall" then -- placas normais de parede
-		local text = meta:get_string("text")
-		local infotext = meta:get_string("infotext")
-		resp = {node=node,meta={text=text,infotext=infotext}}
-	end
-	return resp
-end
-
 
 -- Serializar estrutura
-gestor.estruturador.salvar = function(pos, nome, largura, altura, modp, silencio)
+gestor.estruturador.salvar = function(pos, nome, largura, altura, path, silencio)
 	if not pos or not nome then return false end
 	-- arredondar posicao
+	local as = pos.x
 	pos = arredondar(pos)
 	
-	if modp == nil then
-		modp = modpath
+	if path == nil then
+		path = worldpath .. "/gestor/estruturas"
 	end
 	largura = largura or gestor.diretrizes.estruturas[nome][1]
 	altura = altura or gestor.diretrizes.estruturas[nome][1]
 	if not largura or not altura then return false end
-	-- Criar estrutura
-	if silencio == nil or silencio == false then minetest.chat_send_all("Serializando estrutura. Aguarde...") end
-	local estrutura = {}
-	local ix, iy, iz = 1, 1, 1
-	local x, y, z = pos.x, pos.y, pos.z
-	local limx, limy, limz = (pos.x+largura-1), (pos.y+altura-1), (pos.z+largura-1)
-	local i = 0
-	while (x <= limx) do
-		while (y <= limy) do
-			while (z <= limz) do
-				estrutura[ix.." "..iy.." "..iz] = pegar_node({x = x, y = y, z = z})
-				i = i + 1
-				z = z + 1
-				iz = iz + 1
-			end
-			z = pos.z
-			iz = 1
-			y = y + 1
-			iy = iy + 1
-		end
-		y = pos.y
-		iy = 1
-		x = x + 1
-		ix = ix + 1
+	
+	-- Coordenada do extremo oposto da estrutura
+	local pmax = {x=pos.x+largura, y=pos.y+altura, z=pos.z+largura}
+	
+	-- Criar arquivo schematic
+	if silencio == nil or silencio == false then minetest.chat_send_all("Criando arquivo esquematico da estrutura ...") end
+	minetest.create_schematic(pos, pmax, {}, path .. "/"..nome..".mts")
+	
+	-- Metadados de alguns nodes
+	local metadados = {}
+	
+	-- Metadados dos nodes
+	metadados.nodes = {}
+	
+	-- Armazena as dimensoes
+	metadados.altura = altura
+	metadados.largura = largura
+	
+	-- Pegar nodes quem podem ter seus metadados serializados
+	local nodes = minetest.find_nodes_in_area(pos, pmax, meta_ok)
+	
+	-- Pegar metadados dos nodes encontrados
+	for _,pn in ipairs(nodes) do
+		-- Serializa os metadados
+		local meta = minetest.get_meta(pn):to_table()
+		
+		-- Calcula a posicao relativa a coordenada extremo-negativa
+		local pr = {x=pn.x-pos.x, y=pn.y-pos.y, z=pn.z-pos.z}
+		metadados.nodes[pr.x.." "..pr.y.." "..pr.z] = meta
 	end
 	
-	-- Criar arquivo
-	local output = io.open(modp .. "/estruturas/"..nome, "w")
-	output:write(minetest.serialize(estrutura))
+	-- Criar arquivo de metadados
+	local output = io.open(path .. "/"..nome..".meta", "w")
+	
+	-- Serializa os metadados
+	if silencio == nil or silencio == false then minetest.chat_send_all("Serializando metadados ...") end
+	metadados = minetest.serialize(metadados)
+	
+	if silencio == nil or silencio == false then minetest.chat_send_all("Escrevendo metadados serializados em arquivo ...") end
+	output:write(metadados)
 	io.close(output)
 
 	-- Estrutura serializada com sucesso
-	if silencio == nil or silencio == false then minetest.chat_send_all("Serializacao concluida.") end
 	return true
 end
 
+
 -- Deserializar uma estrutura
-gestor.estruturador.carregar = function(pos, nome, largura, altura, modp, silencio)
+gestor.estruturador.carregar = function(pos, nome, largura, altura, path, silencio)
 	if pos == nil or nome == nil then return false end
 	if silencio == nil or silencio == false then minetest.chat_send_all("Criando estrutura. Aguarde...") end
 	-- Coleta de dados
 	local dados = {}
-	if modp == nil then
-		dados = gestor.diretrizes.estruturas[nome] or {}
-		largura = dados[1] or largura
-		altura = dados[2] or altura
-		modp = modpath
+	if path == nil then
+		path = worldpath .. "/gestor/estruturas"
 	end
-	if largura == nil or altura == nil or nome == nil then return false end
-	local input = io.open(modp .. "/estruturas/"..nome, "r")
+	
+	-- Obter metadados
+	local metadados = ""
+	local input = io.open(path .. "/"..nome..".meta", "r")
 	if input then
-		dados.estrutura = minetest.deserialize(input:read("*l"))
+		metadados = input:read("*l")
 	else
 		return false
 	end
+	if not metadados then
+		minetest.chat_send_all("Erro. Faltou o arquivo de metadados")
+		return false
+	end 
 	io.close(input)
-	-- Criar estrutura
-	local ix, iy, iz = 1, 1, 1
-	local x, y, z = pos.x, pos.y, pos.z
-	local limx, limy, limz = (pos.x+largura-1), (pos.y+altura-1), (pos.z+largura-1)
-	local i = 0
-	while (x <= limx) do
-		while (y <= limy) do
-			while (z <= limz) do
-				local PosNode = dados.estrutura[ix.." "..iy.." "..iz] or {node={name="air"}}
-				minetest.set_node({x = x, y = y, z = z}, PosNode.node)
-				if PosNode.meta then
-					if PosNode.node.name == "placa_terreno:livre" then
-						local meta = minetest.get_meta({x = x, y = y, z = z})
-						--[[
-							Tenta restaurar pos1 e pos2 mas devido a um erro
-							desconhecido as vezes desloca 1 node de distancia 
-							para alguma direção
-						  ]]
-						meta:set_string("pos1", 
-							minetest.serialize(restaurar_pos(minetest.deserialize(PosNode.meta.ref1), 
-							{x = x, y = y, z = z}))
-						)
-						meta:set_string("pos2", 
-							minetest.serialize(restaurar_pos(minetest.deserialize(PosNode.meta.ref2), 
-							{x = x, y = y, z = z}))
-						)
-						--[[
-							Mantes ref1 e ref2 no meto do bloco para evitar distorções maiores
-							usando sempre esses ref's a distorção pode ser no maximo 1 node
-						  ]]
-						meta:set_string("ref1", minetest.serialize(PosNode.meta.ref1))
-						meta:set_string("ref2", minetest.serialize(PosNode.meta.ref2))
-						meta:set_string("custo", PosNode.meta.custo)
-						meta:set_string("altura", PosNode.meta.altura)
-						meta:set_string("status", "livre")
-						meta:set_string("infotext", "Terreno a Venda")
-					elseif PosNode.node.name == "default:sign_wall" then
-						local meta = minetest.get_meta({x = x, y = y, z = z})
-						meta:set_string("text", PosNode.meta.text)
-						meta:set_string("infotext", PosNode.meta.infotext)
-					end
-				end
-				i = i + 1
-				z = z + 1
-				iz = iz + 1
-			end
-			z = pos.z
-			iz = 1
-			y = y + 1
-			iy = iy + 1
-		end
-		y = pos.y
-		iy = 1
-		x = x + 1
-		ix = ix + 1
-	end
+	
+	-- Deserializar metadados
+	metadados = minetest.deserialize(metadados)
+	
+	altura = metadados.altura
+	largura = metadados.largura
+	
+	
+	
+	-- Coordenada do extremo oposto da estrutura
+	local pmax = {x=pos.x+largura, y=pos.y+altura, z=pos.z+largura}
+	
+	-- Colocar estrutura esquematica
+	minetest.place_schematic(pos, path.."/"..nome..".mts", nil, nil, true)
+	
+	-- Restaurar metadados nos nodes
+	for pos_string,meta in pairs(metadados.nodes) do
+				
+		-- Obter pos em tabela
+		local pos_tb = string.split(pos_string, " ")
+		pos_tb = {x=tonumber(pos_tb[1]),y=tonumber(pos_tb[2]),z=tonumber(pos_tb[3])}
+		
+		-- Calcular pos real do node
+		local pn = {x=pos.x+pos_tb.x, y=pos.y+pos_tb.y, z=pos.z+pos_tb.z}
+		
+		-- Salva metadados
+		minetest.get_meta(pn):from_table(meta)
+		
+	end	
 	
 	-- Estrutura construida com sucesso
 	if silencio == nil or silencio == false then minetest.chat_send_all("Estrutura construida. Aguarde o mapa ser renderizado.") end
@@ -276,3 +246,17 @@ minetest.register_node("gestor:escadaria", {
 --------
 -----
 --
+
+-- Pegar metadados da estrutura
+gestor.estruturador.get_meta = function(nome)
+	local path = worldpath .. "/gestor/estruturas"
+	
+	-- Obter metadados
+	local metadados = ""
+	local input = io.open(path .. "/"..nome..".meta", "r")
+	if not input then return nil end 
+	metadados = input:read("*l")
+	io.close(input)
+	
+	return minetest.deserialize(metadados)
+end

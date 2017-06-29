@@ -1,31 +1,11 @@
-Gestor v1.1
+Gestor v1.0
 ===========
 
 Por BrunoMine
 
 Um gestor de servidor de minetest
 
-### Licenças 
-
-Software LGPL v3
-
-Gestor é um software livre; você pode redistribuí-lo e/ou 
-modificá-lo dentro dos termos da Licença Pública Geral Menor GNU 
-como publicada pela Fundação do Software Livre (FSF); na versão 3 
-da Licença, ou (na sua opinião) qualquer versão.
-Este programa é distribuído na esperança de que possa ser útil, 
-mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
-a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
-Licença Pública Geral Menor GNU para maiores detalhes.
-Você deve ter recebido uma cópia da Licença Pública 
-Geral Menor GNU junto com este programa, 
-se não, veja <http://www.gnu.org/licenses/>.
-
-Arte
-
-- gestor.png | por BrunoMine | CC BY v3
-
-## Comandos
+COMANDOS
 
 /gestor | Abre o painel do gestor administrativo
 
@@ -35,7 +15,7 @@ Arte
 /deserializar <arquivo/nome> <largura> <altura> | Cria uma estrutura do diretorio de estruturas
 (toma a posicao do jogador como a menos em x, y e z)
 
-## Estruturas
+ESTRUTURAS
 
 Para que as estruturas sejam controladas pelo gestor
 precisam estar serializadas na pasta 'estruturas' 
@@ -49,25 +29,15 @@ jamais usar sempre usar "_" (sublinhado/underline) no
 lugar de espaço e evitar caracteres especiais como
 c cidilha e outros.
 
-## Anticrash
+ANTICRASH
 
-O sistema anticrash funciona de maneira independete 
-do servidor no entanto os dados que ele utiliza são 
+O sistema anticrash funciona de maneira indempendete 
+do servidor no entanto os dados que ele utiliza sao 
 atualizados quando o servidor inicia portanto sempre 
 abra o servidor no mundo desejado uma vez antes de 
 iniciar o anticrash (apenas quando tiver mudado de 
-lugar ou renomeado um diretorio do servidor de 
-minetest incluindo a pasta do mundo). O anticrash deve 
-abrir o servidor e deve ser execute o arquivo 
-gestor-anticrash-minetest.sh a partir de qualquer da 
-pasta bin do minetest (exemplos de comandos ficam no 
-painel administrativo ingame).
-Lembre de rodar esse anticrash em segundo plano para 
-poder fechar o terminal e deixar o anticrash rodando 
-normalmente.
-AVISO. Para desligar o anticrash corretamente apenas
-desligando o servidor pelo painel administrativo do 
-gestor.
-Para o anticrash funcionar corretamente nos 
-diretórios é preciso que o minetest seja RUN_IN_PLACE 
-(roda no local)
+lugar ou renomeado um diretorio onde do dervidor de 
+minetest incluindo passta do mundo). O anticrash deve 
+abrir o servidor portanto apenas execute os comandos 
+de ligamento do anticrash com o servidor desligado.
+(comandos ficam no painel administrativo ingame)

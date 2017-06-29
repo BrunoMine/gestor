@@ -1,29 +1,24 @@
---[[
-	Mod Gestor para Minetest
-	Gestor v1.0 Copyright (C) 2016 BrunoMine (https://github.com/BrunoMine)
-	
-	Recebeste uma cópia da GNU Lesser General
-	Public License junto com esse software,
-	se não, veja em <http://www.gnu.org/licenses/>. 
-	
-	Diretrizes
-  ]]
+--
+-- Mod gestor
+--
+-- Diretrizes
+--
 
 -- Variavel de Diretrizes
 gestor.diretrizes = {}
 
--- Estruturas
-gestor.diretrizes.estruturas = {
-	--	arquivo,			largura,	altura
-		-- Centro
-		["centro"] = 	{	10,		10	},
-		-- Vilas
-}
-
 -- Lista de vilas (lista de estruturas ja salvas)
-gestor.vilas = {
-	-- "exemplo",
-}
 
+gestor.vilas = {}
 
-
+do
+	local list = minetest.get_dir_list(minetest.get_worldpath() .. "/gestor/estruturas")
+	for n, arq in ipairs(list) do
+		if string.find(arq, ".mts") then
+			arq = string.gsub(arq, ".mts", "")
+			if arq ~= "centro" then
+				table.insert(gestor.vilas, arq)
+			end
+		end
+	end
+end

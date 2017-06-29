@@ -38,7 +38,7 @@ end
 local aba = {} -- salva em que aba o jogador esta
 gestor.menu_principal = function(name, inicio)
 	if inicio == true then aba[name] = "inicio" end
-
+	
 	local formspec = "size[14,11]"
 		..default.gui_bg
 		..default.gui_bg_img
@@ -46,7 +46,7 @@ gestor.menu_principal = function(name, inicio)
 		.."button[0,1;3,1;desligar;Desligar]" -- Botao 1
 		.."button[0,2;3,1;lugares;Lugares]" -- Botao 2
 		.."button[0,3;3,1;conf;Diretrizes]" -- Botao 3
-		.."button[0,4;3,1;anticrash;AntiCrash]" -- Botao 4
+		.."button[0,4;3,1;alerta_de_crash;Alerta de Crash]" -- Botao 4
 		--.."button[0,5;3,1;;]" -- Botao 5
 		--.."button[0,6;3,1;;]" -- Botao 6
 		--.."button[0,7;3,1;;]" -- Botao 7
@@ -113,56 +113,49 @@ gestor.menu_principal = function(name, inicio)
 			.."field[4.3,4.1;3,1;slots;Limite de Jogadores;"..minetest.setting_get("max_users").."]"
 			.."button_exit[7,3.8;3,1;definir_slots;Redefinir Limite]"
 			
-	-- AntiCrash
-	elseif aba[name] == "anticrash" then
+	-- Alerta de crash
+	elseif aba[name] == "alerta_de_crash" then
 		
-		local status_senha = ""
-		if gestor.bd:pegar("anticrash", "from_senha") then status_senha = " (Salva)" end
+		-- Pegar dados
+		local status_alerta_de_crash = minetest.setting_getbool("gestor_alerta_de_crash") or false
+		local servidor_smtp = minetest.setting_get("gestor_servidor_smtp") or "-"
+		local login_smtp = minetest.setting_get("gestor_login_smtp") or "-"
+		local senha_login_smtp = minetest.setting_get("gestor_senha_login_smtp")
+		local email_destinatario = minetest.setting_get("gestor_email_destinatario") or "-"
+		local titulo = minetest.setting_get("gestor_titulo_email") or "-"
+		local texto = minetest.setting_get("gestor_texto_email") or "-"
 		
-		local status_email = "1"
-		if gestor.bd:pegar("anticrash", "status_email") == "true"  then status_email = "2" end
+		local status_senha = "nenhuma"
+		if senha_login_smtp then
+			status_senha = "salva"
+		end
 		
-		local status_backup = "1"
-		if gestor.bd:pegar("anticrash", "status_backup") == "true"  then status_backup = "2" end
 		
-		--[[
-		local bin_paths = io.popen"locate bin/minetest":read"*all"
-		bin_paths = string.gsub(bin_paths, "bin/minetest", "bin")
-		bin_paths = string.gsub(bin_paths, "\n", ",")
-		local path_selecionado = gestor.bd:pegar("anticrash", "bin_path") or "-"
-		]]
-		local comando_selecionado = 1
-		local co = gestor.bd:pegar("anticrash", "comando_abertura")
-		for n, c in ipairs(string.split("minetest --server,minetestserver", ",")) do
-			if c == co then
-				comando_selecionado = n
-				break
-			end
+		if status_alerta_de_crash == false then
+			status_alerta_de_crash = "1"
+		else
+			status_alerta_de_crash = "2"
 		end
 		
 		formspec = formspec
-			.."label[4,1;AntiCrash]"
+		
+			.."label[4,1;Alerta de Crash]"
+			
 			-- Sistema Verificador AntiCrash
 			.."label[4,2;Sistema Verificador AntiCrash]"
 			.."button[4,2.6;3,1;salvar;Salvar Dados]"
-			.."field[7.4,3;3.2,1;quedas;Lim. quedas seguidas;"..gestor.bd:pegar("anticrash", "quedas").."]"
-			.."field[10.6,3;3.3,1;interval;Intervalo de verif. (s);"..gestor.bd:pegar("anticrash", "interval").."]"
-			.."textarea[4.3,3.8;9.6,1.5;comando;Comando de abertura do servidor (digite no terminal UNIX);$ cd \""..string.gsub(modpath, " ", " ").."\"\n$ ./../mod/gestor/./gestor-anticrash-minetest.sh]"
 			-- Sistema Notificador via Email
 			.."label[4,5;Sistema Notificador via Email]"
 			.."label[4,5.4;Estado]"
-			.."dropdown[4,5.8;2,1;status_email;Inativo,Ativo;"..status_email.."]"
-			.."field[6.3,6;4.3,1;from_email;Email emissor;"..gestor.bd:pegar("anticrash", "from_email").."]"
-			.."pwdfield[10.6,6;3.3,1;from_senha;Senha"..status_senha.."]"
-			.."field[4.3,7;4,1;from_login;Login do SMTP;"..gestor.bd:pegar("anticrash", "from_login").."]"
-			.."field[8.3,7;4,1;from_smtp;SMTP do email emissor;"..gestor.bd:pegar("anticrash", "from_smtp").."]"
-			.."field[12.3,7;1.6,1;from_smtp_port;Porta;"..gestor.bd:pegar("anticrash", "from_smtp_port").."]"
-			.."field[4.3,8;5,1;from_subject;Titulo da mensagem de email enviada;"..gestor.bd:pegar("anticrash", "from_subject").."]"
-			.."field[9.3,8;4.6,1;to_email;Email do destinatario;"..gestor.bd:pegar("anticrash", "to_email").."]"
-			-- Sistema de Backup
-			.."label[4,8.8;Sistema de Backup]"
-			.."dropdown[4,9.3;3,1;status_backup;Inativo,Ativo;"..status_backup.."]"
-			.."button[10.6,8.6;3,1;testar_email;Enviar email teste]" -- Testar email
+			
+			.."dropdown[4,5.8;2,1;status_email;Inativo,Ativo;"..status_alerta_de_crash.."]"
+			.."field[6.3,6;4.3,1;login_smtp;Login emissor;"..login_smtp.."]"
+			.."pwdfield[10.6,6;3.3,1;senha;Senha ("..status_senha..")]"
+			.."field[4.3,7.2;9.6,1;servidor_smtp;Servidor SMTP de envio (host:porta);"..servidor_smtp.."]"
+			.."field[4.3,8.4;5,1;titulo;Titulo da mensagem de email enviada;"..titulo.."]"
+			.."field[9.3,8.4;4.6,1;email_destinatario;Email do destinatario;"..email_destinatario.."]"
+			.."field[4.3,9.6;9.6,1;texto;Texto;"..texto.."]"
+			.."button[4,10;5,1;testar_email;Enviar mensagem de teste]"
 			
 	end
 
@@ -190,8 +183,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			aba[name] = "diretrizes"
 			gestor.menu_principal(name)
 			return true
-		elseif fields.anticrash then -- AntiCrash
-			aba[name] = "anticrash"
+		elseif fields.alerta_de_crash then -- Alerta de Crash
+			aba[name] = "alerta_de_crash"
 			gestor.menu_principal(name)
 			return true
 		end
@@ -224,14 +217,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				)
 			elseif fields.construir_vila then
 				escolha_vila[name] = fields.vila
-				minetest.show_formspec(name, "gestor:aviso_construir_vila", "size[4,3.8]"..
+				minetest.show_formspec(name, "gestor:aviso_construir_vila", "size[4,4.8]"..
 					default.gui_bg..
 					default.gui_bg_img..
 					"label[0,0;Tem certeza que quer \nconstruir essa vila?]"..
-					"field[0.25,1.2;4,1;nome_vila;;Nome da Vila]"..
+					"label[0,1;"..core.colorize("#FF0000", "Fique na faixa de altura \n") .. core.colorize("#FF0000", "maxima dos picos em volta").."]"..
+					"field[0.25,3.2;4,1;nome_vila;;Nome da Vila]"..
 					"label[0,2;Arquivo de midia: \n"..escolha_vila[name].."]"..
-					"button[0,3;2,1;cancelar;Cancelar]"..
-					"button_exit[2,3;2,1;ok;Sim]"
+					"button[0,4;2,1;cancelar;Cancelar]"..
+					"button_exit[2,4;2,1;ok;Sim]"
 				)
 			elseif fields.tp_vila then
 				if fields.vila then
@@ -281,127 +275,76 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				end
 			end
 		
-		-- Anticrash
-		elseif aba[name] == "anticrash" then 
+		-- Alerta de Crash
+		elseif aba[name] == "alerta_de_crash" then 
 			
 			if fields.salvar then
+			
+				-- Salvar todos os dados
 				
-				-- Salvar dados gerais
-				if fields.from_email == "" then fields.from_email = "-" end
-				if fields.from_login == "" then fields.from_login = "-" end
-				if fields.from_smtp == "" then fields.from_smtp = "-" end
-				if fields.from_smtp_port == "" then fields.from_smtp_port = "-" end
-				if fields.from_subject == "" then fields.from_subject = "-" end
-				if fields.to_email == "" then fields.to_email = "-" end
-				if fields.quedas == "" or not tonumber(fields.quedas) then fields.quedas = "5" end
-				if fields.interval == "" or not tonumber(fields.interval) then fields.interval = "300" end
-				gestor.bd:salvar("anticrash", "from_email", fields.from_email)
-				gestor.bd:salvar("anticrash", "from_login", fields.from_login)
-				gestor.bd:salvar("anticrash", "from_smtp", fields.from_smtp)
-				gestor.bd:salvar("anticrash", "from_smtp_port", fields.from_smtp_port)
-				gestor.bd:salvar("anticrash", "from_subject", fields.from_subject)
-				gestor.bd:salvar("anticrash", "to_email", fields.to_email)
-				gestor.bd:salvar("anticrash", "quedas", fields.quedas)
-				gestor.bd:salvar("anticrash", "interval", fields.interval)
-				if fields.from_senha ~= "" then
-					gestor.bd:salvar("anticrash", "from_senha", fields.from_senha)
-				end
-				-- Salva todos os dados para o shell
-				gestor.anticrash.salvar_dados()
-				
-				-- Verificar sistema de email
+				-- Status de alerta de email
 				if fields.status_email == "Ativo" then
-					-- Verificando dados
-					if fields.from_email == "-"
-						or fields.from_smtp == "-"
-						or fields.from_smtp_port == "-"
-						or fields.from_subject == "-"
-						or fields.to_email == "-"
-						or gestor.bd:verif("anticrash", "from_senha") ~= true
-					then
-						minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-							default.gui_bg..
-							default.gui_bg_img..
-							"label[0,0;AVISO \nFaltam dados no sistema \nde emails]"
-						)
-						minetest.after(2, gestor.menu_principal, name)
-						gestor.bd:salvar("anticrash", "status_email", "false")
-						return
-					end
-					-- Verificando se sendemail esta instalado
-					local verif_sendemail = os.execute("sendemail --help")
-					if verif_sendemail ~= 0 and verif_sendemail ~= 256 then
-						minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-							default.gui_bg..
-							default.gui_bg_img..
-							"label[0,0;AVISO \nFalta o software sendEmail \nno computador para usar \no Sistema de Email]"
-						)
-						minetest.after(3, gestor.menu_principal, name)
-						gestor.bd:salvar("anticrash", "status_email", "false")
-						return
-					end 
-						
-					gestor.bd:salvar("anticrash", "status_email", "true")
+					minetest.setting_setbool("gestor_alerta_de_crash", true)
 				else
-					gestor.bd:salvar("anticrash", "status_email", "false")
+					minetest.setting_setbool("gestor_alerta_de_crash", false)
 				end
 				
-				-- Verificar sistema de backup
-				if fields.status_backup == "Ativo" then
-					-- Verificando se compactador TAR esta instalado
-					local verif_tar = os.execute("tar --help")
-					if verif_tar ~= 0 and verif_tar ~= 256 then
-						minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-							default.gui_bg..
-							default.gui_bg_img..
-							"label[0,0;AVISO \nFalta o compactador TAR\nno computador para usar \no Sistema de Backups]"
-						)
-						minetest.after(3, gestor.menu_principal, name)
-						gestor.bd:salvar("anticrash", "status_backup", "false")
-						return
-					end 
-						
-					gestor.bd:salvar("anticrash", "status_backup", "true")
-				else
-					gestor.bd:salvar("anticrash", "status_backup", "false")
+				-- Servidor SMTP
+				if fields.servidor_smtp and fields.servidor_smtp ~= "-" then
+					minetest.setting_set("gestor_servidor_smtp", fields.servidor_smtp)
+				end
+				
+				-- Login SMTP
+				if fields.login_smtp and fields.login_smtp ~= "-" then
+					minetest.setting_set("gestor_login_smtp", fields.login_smtp)
+				end
+				
+				-- Senha de Login SMTP
+				if fields.senha and fields.senha ~= "" then
+					minetest.setting_set("gestor_senha_login_smtp", fields.senha)
+				end
+				
+				-- Email do Destinatario
+				if fields.email_destinatario and fields.email_destinatario ~= "-" then
+					minetest.setting_set("gestor_email_destinatario", fields.email_destinatario)
+				end
+				
+				-- Titulo da mensagem de Email
+				if fields.titulo and fields.titulo ~= "-" then
+					minetest.setting_set("gestor_titulo_email", fields.titulo)
+				end
+				
+				-- Texto da mensagem de Email
+				if fields.texto and fields.texto ~= "-" then
+					minetest.setting_set("gestor_texto_email", fields.texto)
 				end
 				
 				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
 					default.gui_bg..
 					default.gui_bg_img..
-					"label[0,0;DADOS SALVOS \nTodos os dados foram \nsalvos com sucesso]"
+					"label[0,0;SUCESSO \nOs dados validos foram \nsalvos.]"
 				)
-				
 				minetest.after(2, gestor.menu_principal, name)
 				return
-			
+				
+				
 			elseif fields.testar_email then
-				if gestor.bd:pegar("anticrash", "status_email") == "false" then
+			
+				if gestor.alerta_de_crash.enviar_email() then
 					minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
 						default.gui_bg..
 						default.gui_bg_img..
-						"label[0,0;AVISO \nO sistema de emails \nprecisa estar ativo para \nenviar email teste]"
+						"label[0,0;FEITO \nComando de envio feito.\nVeja o arquivo de relatorio\ngestor_envios_de_alerta.out]"
+					)	
+				else
+					minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
+						default.gui_bg..
+						default.gui_bg_img..
+						"label[0,0;FALHA \nFaltam dados para\nrealizar o comando de envio.\n]"
 					)
-					minetest.after(2, gestor.menu_principal, name)
-					return
 				end
-				local comando = "sendemail "
-					.."-s \""..gestor.bd:pegar("anticrash", "from_smtp")..":"..gestor.bd:pegar("anticrash", "from_smtp_port").."\" "
-					.."-xu \""..gestor.bd:pegar("anticrash", "from_login").."\" "
-					.."-xp \""..gestor.bd:pegar("anticrash", "from_senha").."\" "
-					.."-f \""..gestor.bd:pegar("anticrash", "from_email").."\" "
-					.."-t \""..gestor.bd:pegar("anticrash", "to_email").."\" "
-					.."-u \"Gestor - Email teste\" "
-					.."-m \"Essa mensagem foi um teste enviado pelo mod gestor\" "
-					.."-o message-charset=UTF-8 &"
-				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
-					default.gui_bg..
-					default.gui_bg_img..
-					"label[0,0;AVISO \nEmail de teste enviado \nverifique a caixa de \nentrada do destinatario]"
-				)
-				os.execute(comando)
 				minetest.after(2, gestor.menu_principal, name)
-				return
+				
 			end
 		end
 	end
@@ -415,7 +358,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		local name = player:get_player_name()		
 		
 		if fields.ok then
-			gestor.anticrash.serializar("status", "off")
 			minetest.chat_send_all("*** Servidor desligando em 3 segundos. (Por "..name..")")
 			minetest.after(3, minetest.chat_send_all, "*** Servidor Desligado")
 			minetest.after(3, minetest.request_shutdown)
@@ -432,9 +374,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if fields.ok then
 			-- adquirindo dados
 			local pos = player:getpos()
-			local dados_estrutura = gestor.diretrizes.estruturas["centro"]
+			local dados_estrutura = gestor.estruturador.get_meta("centro")
 			if not dados_estrutura then return minetest.chat_send_player(name, "Estrutura nao encontrada") end
-			local pos_c = {x=pos.x-(dados_estrutura[1]/2), y=pos.y-2, z=pos.z-(dados_estrutura[1]/2)}
+			local pos_c = {x=pos.x-(dados_estrutura.largura/2), y=pos.y-8, z=pos.z-(dados_estrutura.largura/2)}
 			local n_spawn = {x=pos.x, y=pos.y+2, z=pos.z}
 			-- Construir estrutura
 			if gestor.estruturador.carregar(pos_c, "centro") == false then return minetest.chat_send_player(name, "Estrutura nao encontrada") end
@@ -443,8 +385,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				name, -- Quem registra
 				name, -- Quem vai ser o dono
 				"Centro", -- Nome(etiqueta) da area
-				{x=pos.x-(dados_estrutura[1]/2)-10, y=2000, z=pos.z-(dados_estrutura[1]/2)-10}, -- um dos cantos opostos
-				{x=pos.x+(dados_estrutura[1]/2)+10, y=pos.y-60, z=pos.z+(dados_estrutura[1]/2)+10} -- outro dos cantos opostos
+				{x=pos.x-(dados_estrutura.largura/2)-100, y=2000, z=pos.z-(dados_estrutura.largura/2)-100}, -- um dos cantos opostos
+				{x=pos.x+(dados_estrutura.largura/2)+100, y=pos.y-60, z=pos.z+(dados_estrutura.largura/2)+100} -- outro dos cantos opostos
 			)
 			if resp ~= true then minetest.chat_send_player(name, "Falha ao proteger: "..resp) end
 			-- Salvar dados
@@ -466,31 +408,36 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		local name = player:get_player_name()		
 		
 		if fields.ok then
-			-- Verificando se ja existe essa vila
-			local vila = escolha_vila[name]
-			if gestor.bd:verif("vilas", vila) then return minetest.chat_send_player(name, "Vila ja existente") end
-			-- Adquirindo dados
+			
 			local pos = player:getpos()
-			local dados_estrutura = gestor.diretrizes.estruturas[vila]
-			if not dados_estrutura then return minetest.chat_send_player(name, "Estrutura nao encontrada") end
-			local pos_c = {x=pos.x-(dados_estrutura[1]/2), y=pos.y-2, z=pos.z-(dados_estrutura[1]/2)}
-			local n_spawn = {x=pos.x, y=pos.y+10, z=pos.z}
-			-- Construir estrutura
-			if gestor.estruturador.carregar(pos_c, vila) == false then return minetest.chat_send_player(name, "Estrutura nao encontrada") end
+			local vila = escolha_vila[name]
+			
+			-- Montar vila
+			local r = gestor.montar_vila(pos, vila)
+			if r ~= true then
+				return minetest.chat_send_player(name, r)
+			end
+			
+			
+			local dados_estrutura = gestor.estruturador.get_meta(vila)
+			local n_spawn = pos
+			
 			-- Proteger area da estrutura
 			local resp = gestor.proteger_area(
 				name, -- Quem registra
 				name, -- Quem vai ser o dono
 				fields.vila, -- Nome(etiqueta) da area
-				{x=pos.x-(dados_estrutura[1]/2)-10, y=2000, z=pos.z-(dados_estrutura[1]/2)-10}, -- um dos cantos opostos
-				{x=pos.x+(dados_estrutura[1]/2)+10, y=pos.y-60, z=pos.z+(dados_estrutura[1]/2)+10} -- outro dos cantos opostos
+				{x=pos.x-(dados_estrutura.largura/2)-10, y=2000, z=pos.z-(dados_estrutura.largura/2)-50}, -- um dos cantos opostos
+				{x=pos.x+(dados_estrutura.largura/2)+10, y=pos.y-60, z=pos.z+(dados_estrutura.largura/2)+50} -- outro dos cantos opostos
 			)
 			if resp ~= true then minetest.chat_send_player(name, "Falha ao proteger: "..resp) end
+			
 			-- Salvar dados
 			gestor.bd:salvar("vilas", vila, {nome=fields.nome_vila,pos=n_spawn})
+			
 			-- Finalizando
 			player:moveto(n_spawn)
-			minetest.chat_send_player(name, "*** Vila construida quase pronta. Ajuste as entradas da vila e o ponto de TP(spawn) perto da bilheteria. Configure lojas e bancos existentes.")
+			minetest.chat_send_player(name, "*** Vila construida quase pronta. Ajuste as entradas da vila e o ponto de TP(spawn) perto da bilheteria.")
 		end
 		if fields.cancelar then
 			gestor.menu_principal(name)
