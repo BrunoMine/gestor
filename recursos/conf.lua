@@ -17,10 +17,10 @@ local lista_configs = {
 		format = "string",
 		desc = "Esse nome vai ser exibido na lista de servidores publicos",
 		get_value = function()
-			return minetest.setting_get("server_name")
+			return minetest.settings:get("server_name")
 		end,
 		set_value = function(value)
-			minetest.setting_set("server_name", value)
+			minetest.settings:set("server_name", value)
 		end,
 	},
 	-- Descritivo do servidor
@@ -29,10 +29,10 @@ local lista_configs = {
 		format = "string",
 		desc = "Esse texto descritivo do servidor vai ser exibido na lista de servidores publicos",
 		get_value = function()
-			return minetest.setting_get("server_description")
+			return minetest.settings:get("server_description")
 		end,
 		set_value = function(value)
-			minetest.setting_set("server_description", value)
+			minetest.settings:set("server_description", value)
 		end,
 	},
 	-- Website do servidor
@@ -41,10 +41,10 @@ local lista_configs = {
 		format = "string",
 		desc = "Precisar ser o URL do website do servidor",
 		get_value = function()
-			return minetest.setting_get("server_url")
+			return minetest.settings:get("server_url")
 		end,
 		set_value = function(value)
-			minetest.setting_set("server_url", value)
+			minetest.settings:set("server_url", value)
 		end,
 	},
 	-- Endereço do servidor
@@ -53,10 +53,10 @@ local lista_configs = {
 		format = "string",
 		desc = "Endereço do servidor",
 		get_value = function()
-			return minetest.setting_get("server_address")
+			return minetest.settings:get("server_address")
 		end,
 		set_value = function(value)
-			minetest.setting_set("server_address", value)
+			minetest.settings:set("server_address", value)
 		end,
 	},
 	-- Porta do servidor
@@ -65,10 +65,10 @@ local lista_configs = {
 		format = "int",
 		desc = "Porta UDP do onde o servidor de Minetest vai operar na hospedagem",
 		get_value = function()
-			return minetest.setting_get("port")
+			return minetest.settings:get("port")
 		end,
 		set_value = function(value)
-			minetest.setting_set("port", value)
+			minetest.settings:set("port", value)
 		end,
 	},
 	-- Anunciar Servidor
@@ -78,10 +78,10 @@ local lista_configs = {
 		desc = "Anunciar Servidor na lista de servidores",
 		checkbox_name = "Anunciar Servidor",
 		get_value = function()
-			return minetest.setting_get("server_announce") or "true"
+			return minetest.settings:get("server_announce") or "true"
 		end,
 		set_value = function(value)
-			minetest.setting_set("server_announce", value)
+			minetest.settings:set("server_announce", value)
 		end,
 	},
 	-- Spawn Estatico
@@ -92,10 +92,10 @@ local lista_configs = {
 			.."\nExemplo:"
 			.."\n1500 45 -555",
 		get_value = function()
-			return minetest.setting_get("static_spawnpoint") or ""
+			return minetest.settings:get("static_spawnpoint") or ""
 		end,
 		set_value = function(value)
-			minetest.setting_set("static_spawnpoint", value)
+			minetest.settings:set("static_spawnpoint", value)
 		end,
 	},
 	-- Senha do Servidor
@@ -104,10 +104,10 @@ local lista_configs = {
 		format = "string",
 		desc = "Senha obrigatoria para novos jogadores",
 		get_value = function()
-			return minetest.setting_get("default_password")
+			return minetest.settings:get("default_password")
 		end,
 		set_value = function(value)
-			minetest.setting_set("default_password", value)
+			minetest.settings:set("default_password", value)
 		end,
 	},
 	-- Vagas/Slots
@@ -117,10 +117,10 @@ local lista_configs = {
 		desc = "Vagas para jogadores online"
 			.."\nJogadores com o privilegio server possuem vaga reservada",
 		get_value = function()
-			return minetest.setting_get("max_users")
+			return minetest.settings:get("max_users")
 		end,
 		set_value = function(value)
-			minetest.setting_set("max_users", value)
+			minetest.settings:set("max_users", value)
 		end,
 	},
 	-- PvP
@@ -130,10 +130,10 @@ local lista_configs = {
 		desc = "Permitir que jogadores ataquem diretamente outros jogadores",
 		checkbox_name = "Ativar PvP",
 		get_value = function()
-			return minetest.setting_get("enable_pvp") or "true"
+			return minetest.settings:get("enable_pvp") or "true"
 		end,
 		set_value = function(value)
-			minetest.setting_set("enable_pvp", value)
+			minetest.settings:set("enable_pvp", value)
 		end,
 	},
 	-- Dano
@@ -143,10 +143,10 @@ local lista_configs = {
 		desc = "Permitir que jogadores levem dano",
 		checkbox_name = "Ativar Dano",
 		get_value = function()
-			return minetest.setting_get("enable_damage") or "true"
+			return minetest.settings:get("enable_damage") or "true"
 		end,
 		set_value = function(value)
-			minetest.setting_set("enable_damage", value)
+			minetest.settings:set("enable_damage", value)
 		end,
 	},
 	-- Modo Criativo
@@ -156,10 +156,10 @@ local lista_configs = {
 		desc = "Permitir que jogar no modo criativo incluindo inventario criativo e itens ilimitados",
 		checkbox_name = "Ativar Modo Criativo",
 		get_value = function()
-			return minetest.setting_get("creative_mode") or "true"
+			return minetest.settings:get("creative_mode") or "true"
 		end,
 		set_value = function(value)
-			minetest.setting_set("creative_mode", value)
+			minetest.settings:set("creative_mode", value)
 		end,
 	},
 	-- Distancia para ver Jogadores
@@ -169,10 +169,10 @@ local lista_configs = {
 		desc = "Distancia minima para visualizar outros jogadores no mapa"
 			.."\nDefina 0 para distancia ilimitada",
 		get_value = function()
-			return minetest.setting_get("player_transfer_distance")
+			return minetest.settings:get("player_transfer_distance")
 		end,
 		set_value = function(value)
-			minetest.setting_set("player_transfer_distance", value)
+			minetest.settings:set("player_transfer_distance", value)
 		end,
 	},
 	-- Permanencia de Itens Dropados
@@ -181,10 +181,10 @@ local lista_configs = {
 		format = "int",
 		desc = "Tempo em segundos que um item fica dropado ate ser removido automaticamente pelo servidor",
 		get_value = function()
-			return minetest.setting_get("item_entity_ttl") or 900
+			return minetest.settings:get("item_entity_ttl") or 900
 		end,
 		set_value = function(value)
-			minetest.setting_set("item_entity_ttl", value)
+			minetest.settings:set("item_entity_ttl", value)
 		end,
 	},
 	-- Mostrar status ao conectar
@@ -194,10 +194,10 @@ local lista_configs = {
 		desc = "Mostrar status do servidor ao conectar",
 		checkbox_name = "Mostrar Status",
 		get_value = function()
-			return minetest.setting_get("show_statusline_on_connect") or "true"
+			return minetest.settings:get("show_statusline_on_connect") or "true"
 		end,
 		set_value = function(value)
-			minetest.setting_set("show_statusline_on_connect", value)
+			minetest.settings:set("show_statusline_on_connect", value)
 		end,
 	},
 	-- Tempo do Ciclo dia/noite
@@ -211,10 +211,10 @@ local lista_configs = {
 			.."\n360 = 4 minutos"
 			.."\n1 = 24 horas (equivalendo a um dia real)",
 		get_value = function()
-			return minetest.setting_get("time_speed") or 72
+			return minetest.settings:get("time_speed") or 72
 		end,
 		set_value = function(value)
-			minetest.setting_set("time_speed", value)
+			minetest.settings:set("time_speed", value)
 		end,
 	},
 	-- Limite do Mundo
@@ -223,10 +223,10 @@ local lista_configs = {
 		format = "int",
 		desc = "Distancia do centro ate a borda do mundo",
 		get_value = function()
-			return minetest.setting_get("mapgen_limit") or 31000
+			return minetest.settings:get("mapgen_limit") or 31000
 		end,
 		set_value = function(value)
-			minetest.setting_set("mapgen_limit", value)
+			minetest.settings:set("mapgen_limit", value)
 		end,
 	},
 	-- Auto Salvamento
@@ -235,10 +235,10 @@ local lista_configs = {
 		format = "float",
 		desc = "Tempo em segundos entre cada auto salvamento do mundo do servidor",
 		get_value = function()
-			return minetest.setting_get("server_map_save_interval") or 72
+			return minetest.settings:get("server_map_save_interval") or 72
 		end,
 		set_value = function(value)
-			minetest.setting_set("server_map_save_interval", value)
+			minetest.settings:set("server_map_save_interval", value)
 		end,
 	},
 	-- Senha Obrigatoria
@@ -248,10 +248,10 @@ local lista_configs = {
 		desc = "Impede que jogadores novos se conectem ao servidor sem usar senha",
 		checkbox_name = "Senha Obrigatoria",
 		get_value = function()
-			return minetest.setting_get("disallow_empty_password") or "false"
+			return minetest.settings:get("disallow_empty_password") or "false"
 		end,
 		set_value = function(value)
-			minetest.setting_set("disallow_empty_password", value)
+			minetest.settings:set("disallow_empty_password", value)
 		end,
 	},
 	-- Privilegios Automaticos
@@ -261,10 +261,10 @@ local lista_configs = {
 		desc = "Privilegios dados automaticamente quando um novo jogador se conecta ao servidor"
 			.."\nSeparados por virgulas",
 		get_value = function()
-			return minetest.setting_get("default_privs") or "interact, shout"
+			return minetest.settings:get("default_privs") or "interact, shout"
 		end,
 		set_value = function(value)
-			minetest.setting_set("default_privs", value)
+			minetest.settings:set("default_privs", value)
 		end,
 	},
 	-- Privilegios Basicos
@@ -274,10 +274,10 @@ local lista_configs = {
 		desc = "Privilegios dados para jogadores que possuem o privilegio basic_privs"
 			.."\nSeparados por virgulas",
 		get_value = function()
-			return minetest.setting_get("basic_privs") or "interact, shout"
+			return minetest.settings:get("basic_privs") or "interact, shout"
 		end,
 		set_value = function(value)
-			minetest.setting_set("basic_privs", value)
+			minetest.settings:set("basic_privs", value)
 		end,
 	},
 	-- AntiCheat
@@ -287,7 +287,7 @@ local lista_configs = {
 		desc = "Esse AntiCheat faz parte dos algoritimos basicos do Minetest para verificar a atividade dos jogadores",
 		checkbox_name = "Anticheat",
 		get_value = function()
-			local v = minetest.setting_get("disable_anticheat") or "false"
+			local v = minetest.settings:get("disable_anticheat") or "false"
 			-- Inverte ao exibir
 			if v == "false" then
 				return "true"
@@ -298,9 +298,9 @@ local lista_configs = {
 		set_value = function(value)
 			-- Desinverter por exibir invertido
 			if value == "false" then
-				return minetest.setting_set("disable_anticheat", "true")
+				return minetest.settings:set("disable_anticheat", "true")
 			else
-				return minetest.setting_set("disable_anticheat", "false")
+				return minetest.settings:set("disable_anticheat", "false")
 			end
 			
 		end,
@@ -312,10 +312,10 @@ local lista_configs = {
 		desc = "Sistema que armazena eventos e atividades dos jogadores afim de reconstituir atividades",
 		checkbox_name = "RollBack",
 		get_value = function()
-			return minetest.setting_get("enable_rollback_recording") or "false"
+			return minetest.settings:get("enable_rollback_recording") or "false"
 		end,
 		set_value = function(value)
-			minetest.setting_set("enable_rollback_recording", value)
+			minetest.settings:set("enable_rollback_recording", value)
 		end,
 	},
 	-- Mensagem de bem vindo
@@ -324,10 +324,10 @@ local lista_configs = {
 		format = "string",
 		desc = "Mensagem apresentada ao jogador quando conectar ao servidor",
 		get_value = function()
-			return minetest.setting_get("motd")
+			return minetest.settings:get("motd")
 		end,
 		set_value = function(value)
-			minetest.setting_set("motd", value)
+			minetest.settings:set("motd", value)
 		end,
 	},
 	-- Mensagem de crash do servidor
@@ -336,10 +336,10 @@ local lista_configs = {
 		format = "string",
 		desc = "Mensagem exibida aos jogadores que estiverem online quando o servidor parar de funcionar inesperadamente (por erros do jogo)",
 		get_value = function()
-			return minetest.setting_get("kick_msg_crash")
+			return minetest.settings:get("kick_msg_crash")
 		end,
 		set_value = function(value)
-			minetest.setting_set("kick_msg_crash", value)
+			minetest.settings:set("kick_msg_crash", value)
 		end,
 	},
 }
@@ -416,7 +416,7 @@ gestor.registrar_aba("conf", {
 		else
 			
 			-- Nenhuma diretriz escolhida
-			formspec = formspec .. "textarea[3.8,1.5;5,7.7;;Escolha uma diretriz para editar\n\nTodas as diretrizes serao repassadas ao arquivo minetest.config quando o minetest for encerrado, no entanto algumas modificações ja causam efeito imediato;]"
+			formspec = formspec .. "textarea[3.8,1.5;5,8.7;;Escolha uma diretriz para editar\n\nTodas as diretrizes serao repassadas ao arquivo minetest.config quando o minetest for encerrado, no entanto algumas modificações ja causam efeito imediato\n\nCuidado ao editar algumas diretrizes pois podem causar instabilidade no servidor;]"
 		
 		end
 		
@@ -488,6 +488,7 @@ gestor.registrar_aba("conf", {
 			
 			-- Configurar valor
 			escolha.set_value(value)
+			minetest.settings:write()
 			gestor.menu_principal(name)
 		end
 	end,
