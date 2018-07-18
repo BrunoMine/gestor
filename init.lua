@@ -22,16 +22,15 @@ local modpath = minetest.get_modpath("gestor")
 gestor = {}
 
 -- Banco de Dados do gestor
-gestor.bd = memor.montar_bd()
+gestor.bd = dofile(modpath.."/lib/memor.lua")
 
 -- Carregar scripts
 notificar("Carregando...")
 dofile(modpath.."/diretrizes.lua")
-dofile(modpath.."/estruturador.lua")
-dofile(modpath.."/protetor.lua")
-dofile(modpath.."/lugares_avulsos.lua")
-dofile(modpath.."/vilas.lua")
 dofile(modpath.."/menu_principal.lua")
 dofile(modpath.."/comandos.lua")
-dofile(modpath.."/alerta_de_crash.lua")
+-- Recursos
+dofile(modpath.."/recursos/desligar.lua")
+dofile(modpath.."/recursos/conf.lua")
+dofile(modpath.."/recursos/alerta_de_crash.lua")
 notificar("OK")
