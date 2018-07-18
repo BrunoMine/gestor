@@ -16,9 +16,6 @@ local lista_configs = {
 		name = "Nome do Servidor",
 		format = "string",
 		desc = "Esse nome vai ser exibido na lista de servidores publicos",
-		check_value = function(value)
-			return true
-		end,
 		get_value = function()
 			return minetest.setting_get("server_name")
 		end,
@@ -31,9 +28,6 @@ local lista_configs = {
 		name = "Descritivo do Servidor",
 		format = "string",
 		desc = "Esse texto descritivo do servidor vai ser exibido na lista de servidores publicos",
-		check_value = function(value)
-			return true
-		end,
 		get_value = function()
 			return minetest.setting_get("server_description")
 		end,
@@ -46,9 +40,6 @@ local lista_configs = {
 		name = "Website do Servidor",
 		format = "string",
 		desc = "Precisar ser o URL do website do servidor",
-		check_value = function(value)
-			return true
-		end,
 		get_value = function()
 			return minetest.setting_get("server_url")
 		end,
@@ -61,9 +52,6 @@ local lista_configs = {
 		name = "Endereço do Servidor",
 		format = "string",
 		desc = "Endereço do servidor",
-		check_value = function(value)
-			return true
-		end,
 		get_value = function()
 			return minetest.setting_get("server_address")
 		end,
@@ -73,12 +61,9 @@ local lista_configs = {
 	},
 	-- Porta do servidor
 	{
-		name = "Porta do Servidor",
+		name = "Porta UDP do Servidor",
 		format = "int",
-		desc = "Porta do servidor",
-		check_value = function(value)
-			return true
-		end,
+		desc = "Porta UDP do onde o servidor de Minetest vai operar na hospedagem",
 		get_value = function()
 			return minetest.setting_get("port")
 		end,
@@ -86,15 +71,51 @@ local lista_configs = {
 			minetest.setting_set("port", value)
 		end,
 	},
+	-- Anunciar Servidor
+	{
+		name = "Anunciar Servidor",
+		format = "bool",
+		desc = "Anunciar Servidor na lista de servidores",
+		checkbox_name = "Anunciar Servidor",
+		get_value = function()
+			return minetest.setting_get("server_announce") or "true"
+		end,
+		set_value = function(value)
+			minetest.setting_set("server_announce", value)
+		end,
+	},
+	-- Spawn Estatico
+	{
+		name = "Spawn Estatico",
+		format = "string",
+		desc = "Coordenada do spawn estatico do servidor onde os jogadores vao spawnar ou respawnar apos morrer"
+			.."\nExemplo:"
+			.."\n1500 45 -555",
+		get_value = function()
+			return minetest.setting_get("static_spawnpoint") or ""
+		end,
+		set_value = function(value)
+			minetest.setting_set("static_spawnpoint", value)
+		end,
+	},
+	-- Senha do Servidor
+	{
+		name = "Senha do Servidor",
+		format = "string",
+		desc = "Senha obrigatoria para novos jogadores",
+		get_value = function()
+			return minetest.setting_get("default_password")
+		end,
+		set_value = function(value)
+			minetest.setting_set("default_password", value)
+		end,
+	},
 	-- Vagas/Slots
 	{
 		name = "Vagas",
 		format = "int",
 		desc = "Vagas para jogadores online"
-			.."\nJogadores com o privilegio 'server' possuem vaga reservada",
-		check_value = function(value)
-			return true
-		end,
+			.."\nJogadores com o privilegio server possuem vaga reservada",
 		get_value = function()
 			return minetest.setting_get("max_users")
 		end,
@@ -107,14 +128,194 @@ local lista_configs = {
 		name = "PvP",
 		format = "bool",
 		desc = "Permitir que jogadores ataquem diretamente outros jogadores",
-		check_value = function(value)
-			return true
-		end,
+		checkbox_name = "Ativar PvP",
 		get_value = function()
-			return minetest.setting_get("enable_pvp")
+			return minetest.setting_get("enable_pvp") or "true"
 		end,
 		set_value = function(value)
 			minetest.setting_set("enable_pvp", value)
+		end,
+	},
+	-- Dano
+	{
+		name = "Dano",
+		format = "bool",
+		desc = "Permitir que jogadores levem dano",
+		checkbox_name = "Ativar Dano",
+		get_value = function()
+			return minetest.setting_get("enable_damage") or "true"
+		end,
+		set_value = function(value)
+			minetest.setting_set("enable_damage", value)
+		end,
+	},
+	-- Modo Criativo
+	{
+		name = "Modo Criativo",
+		format = "bool",
+		desc = "Permitir que jogar no modo criativo incluindo inventario criativo e itens ilimitados",
+		checkbox_name = "Ativar Modo Criativo",
+		get_value = function()
+			return minetest.setting_get("creative_mode") or "true"
+		end,
+		set_value = function(value)
+			minetest.setting_set("creative_mode", value)
+		end,
+	},
+	-- Distancia para ver Jogadores
+	{
+		name = "Distancia para ver Jogadores",
+		format = "int",
+		desc = "Distancia minima para visualizar outros jogadores no mapa"
+			.."\nDefina 0 para distancia ilimitada",
+		get_value = function()
+			return minetest.setting_get("player_transfer_distance")
+		end,
+		set_value = function(value)
+			minetest.setting_set("player_transfer_distance", value)
+		end,
+	},
+	-- Permanencia de Itens Dropados
+	{
+		name = "Permanencia de Itens Dropados",
+		format = "int",
+		desc = "Tempo em segundos que um item fica dropado ate ser removido automaticamente pelo servidor",
+		get_value = function()
+			return minetest.setting_get("item_entity_ttl") or 900
+		end,
+		set_value = function(value)
+			minetest.setting_set("item_entity_ttl", value)
+		end,
+	},
+	-- Mostrar status ao conectar
+	{
+		name = "Mostrar status ao conectar",
+		format = "bool",
+		desc = "Mostrar status do servidor ao conectar",
+		checkbox_name = "Mostrar Status",
+		get_value = function()
+			return minetest.setting_get("show_statusline_on_connect") or "true"
+		end,
+		set_value = function(value)
+			minetest.setting_set("show_statusline_on_connect", value)
+		end,
+	},
+	-- Tempo do Ciclo dia/noite
+	{
+		name = "Tempo do Ciclo dia/noite",
+		format = "int",
+		desc = "Tempo do Ciclo dia/noite"
+			.."\nEquivale a um multiplicador de velocidade relacionado ao tempo do ciclo dia/noite real"
+			.."\nExemplos:"
+			.."\n72 = 20 minutos"
+			.."\n360 = 4 minutos"
+			.."\n1 = 24 horas (equivalendo a um dia real)",
+		get_value = function()
+			return minetest.setting_get("time_speed") or 72
+		end,
+		set_value = function(value)
+			minetest.setting_set("time_speed", value)
+		end,
+	},
+	-- Limite do Mundo
+	{
+		name = "Limite do Mundo",
+		format = "int",
+		desc = "Distancia do centro ate a borda do mundo",
+		get_value = function()
+			return minetest.setting_get("mapgen_limit") or 31000
+		end,
+		set_value = function(value)
+			minetest.setting_set("mapgen_limit", value)
+		end,
+	},
+	-- Auto Salvamento
+	{
+		name = "Auto Salvamento",
+		format = "float",
+		desc = "Tempo em segundos entre cada auto salvamento do mundo do servidor",
+		get_value = function()
+			return minetest.setting_get("server_map_save_interval") or 72
+		end,
+		set_value = function(value)
+			minetest.setting_set("server_map_save_interval", value)
+		end,
+	},
+	-- Senha Obrigatoria
+	{
+		name = "Senha Obrigatoria",
+		format = "bool",
+		desc = "Impede que jogadores novos se conectem ao servidor sem usar senha",
+		checkbox_name = "Senha Obrigatoria",
+		get_value = function()
+			return minetest.setting_get("disallow_empty_password") or "false"
+		end,
+		set_value = function(value)
+			minetest.setting_set("disallow_empty_password", value)
+		end,
+	},
+	-- Privilegios Automaticos
+	{
+		name = "Privilegios Automaticos",
+		format = "string",
+		desc = "Privilegios dados automaticamente quando um novo jogador se conecta ao servidor"
+			.."\nSeparados por virgulas",
+		get_value = function()
+			return minetest.setting_get("default_privs") or "interact, shout"
+		end,
+		set_value = function(value)
+			minetest.setting_set("default_privs", value)
+		end,
+	},
+	-- Privilegios Basicos
+	{
+		name = "Privilegios Basicos",
+		format = "string",
+		desc = "Privilegios dados para jogadores que possuem o privilegio basic_privs"
+			.."\nSeparados por virgulas",
+		get_value = function()
+			return minetest.setting_get("basic_privs") or "interact, shout"
+		end,
+		set_value = function(value)
+			minetest.setting_set("basic_privs", value)
+		end,
+	},
+	-- AntiCheat
+	{
+		name = "AntiCheat",
+		format = "bool",
+		desc = "Esse AntiCheat faz parte dos algoritimos basicos do Minetest para verificar a atividade dos jogadores",
+		checkbox_name = "Anticheat",
+		get_value = function()
+			local v = minetest.setting_get("disable_anticheat") or "false"
+			-- Inverte ao exibir
+			if v == "false" then
+				return "true"
+			else
+				return "false"
+			end
+		end,
+		set_value = function(value)
+			-- Desinverter por exibir invertido
+			if value == "false" then
+				return minetest.setting_set("disable_anticheat", "true")
+			else
+				return minetest.setting_set("disable_anticheat", "false")
+			end
+			
+		end,
+	},
+	-- RollBack
+	{
+		name = "RollBack",
+		format = "bool",
+		desc = "Sistema que armazena eventos e atividades dos jogadores afim de reconstituir atividades",
+		checkbox_name = "RollBack",
+		get_value = function()
+			return minetest.setting_get("enable_rollback_recording") or "false"
+		end,
+		set_value = function(value)
+			minetest.setting_set("enable_rollback_recording", value)
 		end,
 	},
 	-- Mensagem de bem vindo
@@ -122,9 +323,6 @@ local lista_configs = {
 		name = "Mensagem de Bem Vindo",
 		format = "string",
 		desc = "Mensagem apresentada ao jogador quando conectar ao servidor",
-		check_value = function(value)
-			return true
-		end,
 		get_value = function()
 			return minetest.setting_get("motd")
 		end,
@@ -137,9 +335,6 @@ local lista_configs = {
 		name = "Mensagem de Crash",
 		format = "string",
 		desc = "Mensagem exibida aos jogadores que estiverem online quando o servidor parar de funcionar inesperadamente (por erros do jogo)",
-		check_value = function(value)
-			return true
-		end,
 		get_value = function()
 			return minetest.setting_get("kick_msg_crash")
 		end,
@@ -173,11 +368,6 @@ gestor.registrar_aba("conf", {
 		
 		local formspec = "label[3.5,1;Diretrizes]"
 			.."textlist[9,1;4.5,9.8;menu;"..string_menu_configs.."]"
-			--.."label[3.5,2;Ponto de Spawn]"
-			--.."button_exit[3.5,2.4;3,1;definir_spawn;Definir Aqui]"
-			--.."button_exit[6.5,2.4;3,1;ir_spawn;Ir para Spawn]"
-			--.."field[3.8,4.1;3,1;slots;Limite de Jogadores;"..minetest.setting_get("max_users").."]"
-			--.."button_exit[6.5,3.8;3,1;definir_slots;Redefinir Limite]"
 		
 		-- Construir formulario de acordo com item escolhido
 		if acessos[name].escolha then
@@ -206,13 +396,13 @@ gestor.registrar_aba("conf", {
 				form = form .. "textarea[3.8,4.3;5,7.7;;Descritivo:\n"..escolha.desc..";]"
 			end
 			
-			-- Campo para preenchimento
+			-- Checkbox para preenchimento
 			if escolha.format == "bool" then
-				form = form ..  "checkbox[3.5,1.8;checkbox;Ativar PvP;true]"
 				
+				form = form ..  "checkbox[3.5,1.8;definir;"..escolha.checkbox_name..";"..tostring(escolha.get_value()).."]"
 				
 				-- Texto de aviso
-				if acessos[name].aviso or 1 == 1 then
+				if acessos[name].aviso then
 					form = form .. "label[3.5,2.6;"..acessos[name].aviso.."]"
 					acessos[name].aviso = nil
 				end
@@ -223,6 +413,11 @@ gestor.registrar_aba("conf", {
 			
 			-- Insere no formspec
 			formspec = formspec .. form
+		else
+			
+			-- Nenhuma diretriz escolhida
+			formspec = formspec .. "textarea[3.8,1.5;5,7.7;;Escolha uma diretriz para editar\n\nTodas as diretrizes serao repassadas ao arquivo minetest.config quando o minetest for encerrado, no entanto algumas modificações ja causam efeito imediato;]"
+		
 		end
 		
 		return formspec
@@ -262,6 +457,9 @@ gestor.registrar_aba("conf", {
 					end
 				end
 			
+			elseif escolha.format == "bool" then
+				value = fields.definir
+				
 			-- Outros formatos
 			else
 				value = fields.config_label_1
@@ -271,16 +469,25 @@ gestor.registrar_aba("conf", {
 			acessos[name].config_label_1 = value
 			
 			-- Verificador personalizado
-			local check = escolha.check_value()
-			if check ~= true then
-				acessos[name].aviso = check
-				gestor.menu_principal(name)
-				return
+			if escolha.check_value then
+				local check = escolha.check_value()
+				if check ~= true then
+					acessos[name].aviso = check
+					gestor.menu_principal(name)
+					return
+				end
+			end
+			
+			-- Texto de aviso
+			acessos[name].aviso = "Definido"
+			if value == "true" then
+				acessos[name].aviso = "Ativado"
+			elseif value == "false" then
+				acessos[name].aviso = "Desativado"
 			end
 			
 			-- Configurar valor
 			escolha.set_value(value)
-			acessos[name].aviso = "Definido"
 			gestor.menu_principal(name)
 		end
 	end,
