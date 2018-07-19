@@ -70,7 +70,7 @@ end
 -- Termos proibidos
 
 
--- Registrar aba 'diretrizes'
+-- Registrar aba 'penalidades'
 gestor.registrar_aba("penalidades", {
 	titulo = "Penalidades",
 	get_formspec = function(name)

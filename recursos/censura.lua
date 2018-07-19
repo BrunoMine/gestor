@@ -34,7 +34,7 @@ minetest.register_on_leaveplayer(function(player)
 	acessos[player:get_player_name()] = nil
 end)
 
--- Registrar aba 'desligar'
+-- Registrar aba 'censura'
 gestor.registrar_aba("censura", {
 	titulo = "Termos Proibidos",
 	get_formspec = function(name)
@@ -82,7 +82,7 @@ gestor.registrar_aba("censura", {
 			update_tb_bad_words()
 			gestor.menu_principal(name)
 		
-		-- Interditar
+		-- Ativar censura
 		elseif fields.bad_words_status then
 			minetest.settings:set("gestor_censurar_termos_proibidos", fields.bad_words_status)
 			minetest.settings:write()

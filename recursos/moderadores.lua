@@ -24,7 +24,7 @@ minetest.register_on_leaveplayer(function(player)
 	acessos[player:get_player_name()] = nil
 end)
 
--- Registrar aba 'desligar'
+-- Registrar aba 'moderadores'
 gestor.registrar_aba("moderadores", {
 	titulo = "Moderadores",
 	get_formspec = function(name)
