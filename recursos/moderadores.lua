@@ -120,7 +120,7 @@ minetest.register_on_prejoinplayer(function(name)
 	-- Mensagem
 	local msg = minetest.settings:get("gestor_aviso_interditado") or ""
 	
-	if gestor.interditado ~= false then return msg end
+	if gestor.interditado == false then return end
 	
 	local staff_list = gestor.bd.pegar("staff", "list")
 	local staff_list_i = {}
@@ -132,3 +132,5 @@ minetest.register_on_prejoinplayer(function(name)
 		return msg
 	end
 end)
+
+
