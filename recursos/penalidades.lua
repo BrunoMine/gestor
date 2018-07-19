@@ -67,6 +67,8 @@ for _,name in ipairs(tempos_penas) do
 	tempos_penas_list_string = tempos_penas_list_string .. name
 end
 
+-- Termos proibidos
+
 
 -- Registrar aba 'diretrizes'
 gestor.registrar_aba("penalidades", {

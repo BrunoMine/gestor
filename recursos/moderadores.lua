@@ -77,6 +77,7 @@ gestor.registrar_aba("moderadores", {
 		-- Interditar
 		elseif fields.interditar then
 			minetest.settings:set("gestor_interditado", fields.interditar)
+			minetest.settings:write()
 			gestor.interditar_servidor()
 			
 		-- Redefir mensagem de interdição
@@ -91,7 +92,7 @@ gestor.registrar_aba("moderadores", {
 
 
 -- Interditar_servidor
-gestor.interditado = minetest.settings:get_bool("gestor_interditado", false)
+gestor.interditado = minetest.settings:get_bool("gestor_interditado", false) or false
 gestor.interditar_servidor = function()
 	-- Altera variavel global de controle
 	gestor.interditado = true
