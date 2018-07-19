@@ -32,5 +32,6 @@ dofile(modpath.."/comandos.lua")
 -- Recursos
 dofile(modpath.."/recursos/desligar.lua")
 dofile(modpath.."/recursos/conf.lua")
+dofile(modpath.."/recursos/moderadores.lua")
 dofile(modpath.."/recursos/alerta_de_crash.lua")
 notificar("OK")
