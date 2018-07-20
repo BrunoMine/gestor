@@ -10,7 +10,7 @@
   ]]
 
 -- Variavel de controle
-local antiflood = minetest.settings:get_bool("gestor_sistema_antflood", false) or false
+local antiflood = minetest.settings:get_bool("gestor_sistema_antflood_chat", false) or false
 
 -- Controle de acessos
 local acessos = {}

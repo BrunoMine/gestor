@@ -280,17 +280,17 @@ local lista_configs = {
 			minetest.settings:set("basic_privs", value)
 		end,
 	},
-	-- AntiFlood
+	-- AntiFlood de Bate-Papo
 	{
-		name = "AntiFlood",
+		name = "AntiFlood de Bate-Papo",
 		format = "bool",
 		desc = "Sistema que evita que jogadores enviem mensagens em demasia no bate-papo",
-		checkbox_name = "AntiFlood",
+		checkbox_name = "AntiFlood de Bate-Papo",
 		get_value = function()
-			return minetest.settings:get("gestor_sistema_antflood") or "false"
+			return minetest.settings:get("gestor_sistema_antflood_chat") or "false"
 		end,
 		set_value = function(value)
-			minetest.settings:set("gestor_sistema_antflood", value)
+			minetest.settings:set("gestor_sistema_antflood_chat", value)
 		end,
 	},
 	-- AntiCheat
