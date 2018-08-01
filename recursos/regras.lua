@@ -29,11 +29,19 @@ minetest.register_on_leaveplayer(function(player)
 	acessos[player:get_player_name()] = nil
 end)
 
+local ajustar_texto = function(t)
+	t = string.gsub(t, "\\", "\\\\")
+	t = string.gsub(t, ";", ",")
+	t = string.gsub(t, "%[", "(")
+	t = string.gsub(t, '%]', ")")
+	return t
+end
+
 -- Registrar aba 'regras'
 gestor.registrar_aba("regras", {
 	titulo = "Regras",
 	get_formspec = function(name)
-				
+		
 		local formspec = "label[3.5,1;Regras do Servidor]"
 			.."textarea[3.9,1.8;9.8,8.5;texto_regras;;"..texto_regras.."]"
 			.."button[3.5,9.4;8,1;redefinir;Redefinir]"
@@ -59,7 +67,7 @@ gestor.registrar_aba("regras", {
 		
 		-- Redefinir regras
 		elseif fields.redefinir and fields.texto_regras ~= "" then
-			gestor.bd.salvar_texto("regras", "default", fields.texto_regras)
+			gestor.bd.salvar_texto("regras", "default", ajustar_texto(fields.texto_regras))
 			texto_regras = gestor.bd.pegar_texto("regras", "default")
 			acessos[name].aviso = "Regras redefinidas"
 			gestor.menu_principal(name)
