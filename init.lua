@@ -26,6 +26,7 @@ gestor.bd = dofile(modpath.."/lib/memor.lua")
 
 -- Carregar scripts
 notificar("Carregando...")
+dofile(modpath.."/tradutor.lua")
 dofile(modpath.."/diretrizes.lua")
 dofile(modpath.."/menu_principal.lua")
 dofile(modpath.."/comparar_tempo.lua")

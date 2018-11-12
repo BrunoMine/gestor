@@ -9,6 +9,9 @@
 	Menu Principal (Painel do gestor)
   ]]
 
+-- Tradutor de texto
+local S = gestor.S
+
 -- Abas registradas
 gestor.abas = {}
 
@@ -34,6 +37,12 @@ end
 gestor.menu_principal = function(name)
 	local player = minetest.get_player_by_name(name)
 	
+	local formspec = "size[14,11]"
+		..default.gui_bg
+		..default.gui_bg_img
+		.."label[0,0;"..S("Gestor Administrativo do Servidor").."]"
+		
+	
 	-- Verifica aba em acesso
 	local aba_atual = player:get_attribute("gestor_aba")
 	if aba_atual == nil then
@@ -41,11 +50,6 @@ gestor.menu_principal = function(name)
 		player:set_attribute("gestor_aba", aba_atual)
 	end
 	
-	local formspec = "size[14,11]"
-		..default.gui_bg
-		..default.gui_bg_img
-		.."label[0,0;Gestor Administrativos do Servidor]"
-		
 	-- Botoes de abas
 	for name_aba,def in pairs(gestor.abas) do
 		formspec = formspec..def.formspec_button
@@ -60,6 +64,8 @@ gestor.menu_principal = function(name)
 		-- Gerar formspec
 		formspec = formspec .. gestor.abas[aba_atual].get_formspec(name)
 		
+	else
+		formspec = formspec.."image[5.5,3;6,6;gestor.png]"
 	end
 
 	-- Exibir tela

@@ -1,0 +1,690 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-12 18:11-0200\n"
+"PO-Revision-Date: 2018-11-12 18:12-0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: menu_principal.lua
+msgid "Gestor Administrativo do Servidor"
+msgstr "Administrative Server Manager"
+
+#: recursos/alerta_de_crash.lua
+msgid "Alerta de Crash"
+msgstr "Crash Alert"
+
+#: recursos/alerta_de_crash.lua
+msgid "nenhuma"
+msgstr "nothing"
+
+#: recursos/alerta_de_crash.lua
+msgid "salva"
+msgstr "saved"
+
+#: recursos/alerta_de_crash.lua
+msgid "Sistema Verificador AntiCrash"
+msgstr "AntiCrash Checker System"
+
+#: recursos/alerta_de_crash.lua
+msgid "Salvar Dados"
+msgstr "Save Params"
+
+#: recursos/alerta_de_crash.lua
+msgid "Sistema Notificador via Email"
+msgstr "Email Notifier"
+
+#: recursos/alerta_de_crash.lua
+msgid "Estado"
+msgstr "Status"
+
+#: recursos/alerta_de_crash.lua
+msgid "Inativo"
+msgstr "Inactive"
+
+#: recursos/alerta_de_crash.lua
+msgid "Ativo"
+msgstr "Active"
+
+#: recursos/alerta_de_crash.lua
+msgid "Login emissor"
+msgstr "Sender login"
+
+#: recursos/alerta_de_crash.lua
+msgid "Senha (@1)"
+msgstr "Password (@1)"
+
+#: recursos/alerta_de_crash.lua
+msgid "Servidor SMTP de envio (host:porta)"
+msgstr "SMTP sending server (host:port)"
+
+#: recursos/alerta_de_crash.lua
+msgid "Título da mensagem de email enviada"
+msgstr "Title of the email message sent"
+
+#: recursos/alerta_de_crash.lua
+msgid "Email do destinatario"
+msgstr "Recipient's Email"
+
+#: recursos/alerta_de_crash.lua
+msgid "Texto"
+msgstr "Text"
+
+#: recursos/alerta_de_crash.lua
+msgid "Enviar mensagem de teste"
+msgstr "Send test message"
+
+#: recursos/alerta_de_crash.lua
+msgid "Dados salvos"
+msgstr "Saved params"
+
+#: recursos/alerta_de_crash.lua
+msgid "PRONTO. Veja o relatorio"
+msgstr "DONE. See the report file"
+
+#: recursos/alerta_de_crash.lua
+msgid "FALHA. Faltam dados"
+msgstr "FAIL. missing params"
+
+#: recursos/antiflood.lua
+msgid "Proibido floddar o chat com muitas mensagens"
+msgstr "Forbidden to chat with many messages"
+
+#: recursos/censura.lua
+msgid "Termos Proibidos"
+msgstr "Prohibited Terms"
+
+#: recursos/censura.lua
+msgid "Lista de Termos Proibidos"
+msgstr "List of Prohibited Terms"
+
+#: recursos/censura.lua
+msgid "Termo"
+msgstr "Terms"
+
+#: recursos/censura.lua
+msgid "Adicionar Termo"
+msgstr "Add Term"
+
+#: recursos/censura.lua
+msgid "Remover Termo"
+msgstr "Remove Term"
+
+#: recursos/censura.lua
+msgid "Censurar Termos Proibidos"
+msgstr "Censor Prohibited Terms"
+
+#: recursos/censura.lua
+msgid "Proibido usar o termo @1"
+msgstr "Prohibited to use the term @1"
+
+#: recursos/conf.lua
+msgid "Nome do Servidor"
+msgstr "Server Name"
+
+#: recursos/conf.lua
+msgid "Esse nome vai ser exibido na lista de servidores publicos"
+msgstr ""
+"Name of the server, to be displayed when players join and in the serverlist"
+
+#: recursos/conf.lua
+msgid "Descritivo do Servidor"
+msgstr "Description of Server"
+
+#: recursos/conf.lua
+msgid ""
+"Esse texto descritivo do servidor vai ser exibido na lista de servidores "
+"publicos"
+msgstr ""
+"Description of server, to be displayed when players join and in the "
+"serverlist"
+
+#: recursos/conf.lua
+msgid "Website do Servidor"
+msgstr "Server Website"
+
+#: recursos/conf.lua
+msgid "Precisar ser o URL do website do servidor"
+msgstr "Need to be the website URL of the server"
+
+#: recursos/conf.lua
+msgid "Endereço do Servidor"
+msgstr "Server Address"
+
+#: recursos/conf.lua
+msgid "Endereço do servidor"
+msgstr "Server address"
+
+#: recursos/conf.lua
+msgid "Porta UDP do Servidor"
+msgstr "Server UDP Port"
+
+#: recursos/conf.lua
+msgid "Porta UDP do onde o servidor de Minetest vai operar na hospedagem"
+msgstr "Network port to listen (UDP)"
+
+#: recursos/conf.lua
+msgid "Anunciar Servidor"
+msgstr "Server Announce"
+
+#: recursos/conf.lua
+msgid "Anunciar Servidor na lista de servidores"
+msgstr "Automaticaly report to the serverlist"
+
+#: recursos/conf.lua
+msgid "Spawn Estatico"
+msgstr "Static Spawnpoint"
+
+#: recursos/conf.lua
+msgid ""
+"Coordenada do spawn estatico do servidor onde os jogadores vao spawnar ou "
+"respawnar apos morrer"
+msgstr "If this is set, players will always (re)spawn at the given position"
+
+#: recursos/conf.lua
+msgid "Exemplo:"
+msgstr "Example:"
+
+#: recursos/conf.lua
+msgid "Senha do Servidor"
+msgstr "Server Password"
+
+#: recursos/conf.lua
+msgid "Senha obrigatoria para novos jogadores"
+msgstr "Required password for new players"
+
+#: recursos/conf.lua
+msgid "Vagas"
+msgstr "Server Slots"
+
+#: recursos/conf.lua
+msgid "Vagas para jogadores online"
+msgstr "Maximum number of players that can connect simultaneously"
+
+#: recursos/conf.lua
+msgid "Jogadores com o privilegio server possuem vaga reservada"
+msgstr "Players with the privilege server have reserved slots"
+
+#: recursos/conf.lua
+msgid "PvP"
+msgstr "PvP"
+
+#: recursos/conf.lua
+msgid "Permitir que jogadores ataquem diretamente outros jogadores"
+msgstr "Whether to allow players to damage and kill each other"
+
+#: recursos/conf.lua
+msgid "Ativar PvP"
+msgstr "Active PvP"
+
+#: recursos/conf.lua
+msgid "Dano"
+msgstr "Damage"
+
+#: recursos/conf.lua
+msgid "Permitir que jogadores levem dano"
+msgstr "Enable players getting damage and dying"
+
+#: recursos/conf.lua
+msgid "Ativar Dano"
+msgstr "Active Damage"
+
+#: recursos/conf.lua
+msgid "Modo Criativo"
+msgstr "Creative Mode"
+
+#: recursos/conf.lua
+msgid ""
+"Permitir que jogar no modo criativo incluindo inventario criativo e itens "
+"ilimitados"
+msgstr "Enable creative mode for new created maps"
+
+#: recursos/conf.lua
+msgid "Ativar Modo Criativo"
+msgstr "Active Creative Mode"
+
+#: recursos/conf.lua
+msgid "Distancia para ver Jogadores"
+msgstr "Distance to view Players"
+
+#: recursos/conf.lua
+msgid "Distancia minima para visualizar outros jogadores no mapa"
+msgstr "Minimum distance to see other players on the map"
+
+#: recursos/conf.lua
+msgid "Defina 0 para distancia ilimitada"
+msgstr "Set 0 for unlimited distance"
+
+#: recursos/conf.lua
+msgid "Permanencia de Itens Dropados"
+msgstr "Permanence of Dropped Items"
+
+#: recursos/conf.lua
+msgid ""
+"Tempo em segundos que um item fica dropado ate ser removido automaticamente "
+"pelo servidor"
+msgstr ""
+"Time in seconds that an item is dropped until it is automatically removed by "
+"the server"
+
+#: recursos/conf.lua
+msgid "Mostrar status ao conectar"
+msgstr "Show status when connecting"
+
+#: recursos/conf.lua
+msgid "Mostrar status do servidor ao conectar"
+msgstr "Show server status when connecting"
+
+#: recursos/conf.lua
+msgid "Mostrar Status"
+msgstr "Show Status"
+
+#: recursos/conf.lua
+msgid "Tempo do Ciclo dia/noite"
+msgstr "Cycle of day/night"
+
+#: recursos/conf.lua
+msgid ""
+"Equivale a um multiplicador de velocidade relacionado ao tempo do ciclo dia/"
+"noite real"
+msgstr ""
+"Equivalent to a velocity multiplier related to the actual day/night cycle "
+"time"
+
+#: recursos/conf.lua
+msgid "Exemplos:"
+msgstr "Examples:"
+
+#: recursos/conf.lua
+msgid "72 = 20 minutos"
+msgstr "72 = 20 minutes"
+
+#: recursos/conf.lua
+msgid "360 = 4 minutos"
+msgstr "360 = 4 minutes"
+
+#: recursos/conf.lua
+msgid "1 = 24 horas (equivalendo a um dia real)"
+msgstr "1 = 24 hours (equivalent to a real day)"
+
+#: recursos/conf.lua
+msgid "Limite do Mundo"
+msgstr "World Limit"
+
+#: recursos/conf.lua
+msgid "Distancia do centro ate a borda do mundo"
+msgstr "Distance from center to the edge of the world"
+
+#: recursos/conf.lua
+msgid "Auto Salvamento"
+msgstr "Auto Save"
+
+#: recursos/conf.lua
+msgid "Tempo em segundos entre cada auto salvamento do mundo do servidor"
+msgstr "Interval of saving important changes in the world, stated in seconds"
+
+#: recursos/conf.lua
+msgid "Senha Obrigatoria"
+msgstr "Password Required"
+
+#: recursos/conf.lua
+msgid "Impede que jogadores novos se conectem ao servidor sem usar senha"
+msgstr "New users need to input this password"
+
+#: recursos/conf.lua
+msgid "Privilegios Automaticos"
+msgstr "Automatic Privileges"
+
+#: recursos/conf.lua
+msgid ""
+"Privilegios dados automaticamente quando um novo jogador se conecta ao "
+"servidor"
+msgstr "The privileges that new users automatically get"
+
+#: recursos/conf.lua
+msgid "Separados por virgulas"
+msgstr "Separated by commas (,)"
+
+#: recursos/conf.lua
+msgid "Privilegios Basicos"
+msgstr "Basic Privileges"
+
+#: recursos/conf.lua
+msgid "Privilegios dados para jogadores que possuem o privilegio basic_privs"
+msgstr "Privileges that players with basic_privs can grant"
+
+#: recursos/conf.lua
+msgid "AntiFlood de Bate-Papo"
+msgstr "Chat AntiFlood"
+
+#: recursos/conf.lua
+msgid ""
+"Sistema que evita que jogadores enviem mensagens em demasia no bate-papo"
+msgstr ""
+"System that prevents players from sending too much messages in the chat"
+
+#: recursos/conf.lua
+msgid "AntiCheat"
+msgstr "AntiCheat"
+
+#: recursos/conf.lua
+msgid ""
+"Esse AntiCheat faz parte dos algoritimos basicos do Minetest para verificar "
+"a atividade dos jogadores"
+msgstr "If enabled, disable cheat prevention in multiplayer"
+
+#: recursos/conf.lua
+msgid "Anticheat"
+msgstr "Anticheat"
+
+#: recursos/conf.lua
+msgid "RollBack"
+msgstr "RollBack"
+
+#: recursos/conf.lua
+msgid ""
+"Sistema que armazena eventos e atividades dos jogadores afim de reconstituir "
+"atividades"
+msgstr ""
+"If enabled, actions are recorded for rollback (this option is only read when "
+"server starts)"
+
+#: recursos/conf.lua
+msgid "Mensagem de Bem Vindo"
+msgstr "Message of the day"
+
+#: recursos/conf.lua
+msgid "Mensagem apresentada ao jogador quando conectar ao servidor"
+msgstr "Message of the day displayed to players connecting"
+
+#: recursos/conf.lua
+msgid "Mensagem de Crash"
+msgstr "Crash Message"
+
+#: recursos/conf.lua
+msgid ""
+"Mensagem exibida aos jogadores que estiverem online quando o servidor parar "
+"de funcionar inesperadamente (por erros do jogo)"
+msgstr "A message to be displayed to all clients when the server crashes"
+
+#: recursos/conf.lua
+msgid "Diretrizes"
+msgstr "Server Settings"
+
+#: recursos/conf.lua
+msgid "Definir"
+msgstr "Set"
+
+#: recursos/conf.lua
+msgid "Descritivo"
+msgstr "Descriptive"
+
+#: recursos/conf.lua
+msgid "Escolha uma diretriz para editar"
+msgstr "Choose a guideline to edit"
+
+#: recursos/conf.lua
+msgid ""
+"Todas as diretrizes serao repassadas ao arquivo minetest.config quando o "
+"minetest for encerrado, no entanto algumas modificações ja causam efeito "
+"imediato"
+msgstr ""
+"All settings will be passed to the minetest.config file when the minetest is "
+"closed, however some modifications already cause immediate effect"
+
+#: recursos/conf.lua
+msgid ""
+"Cuidado ao editar algumas diretrizes pois podem causar instabilidade no "
+"servidor"
+msgstr ""
+"Be careful while editing some guidelines as they can cause server instability"
+
+#: recursos/conf.lua
+msgid "Precisar ser numero"
+msgstr "Need to be number"
+
+#: recursos/conf.lua
+msgid "Definido"
+msgstr "Defined"
+
+#: recursos/conf.lua
+msgid "Ativado"
+msgstr "Activate"
+
+#: recursos/conf.lua
+msgid "Desativado"
+msgstr "Deactivate"
+
+#: recursos/desligar.lua
+msgid "Tem certeza?"
+msgstr "Are you sure?"
+
+#: recursos/desligar.lua
+msgid "Confirmar"
+msgstr "Confirm"
+
+#: recursos/desligar.lua
+msgid "Servidor desligando em 3 segundos. (Por @1)"
+msgstr "Shutting down Server in 3 seconds. (by @1)"
+
+#: recursos/desligar.lua
+msgid "Servidor Desligado"
+msgstr "Server off"
+
+#: recursos/moderadores.lua
+msgid "Moderadores"
+msgstr "Staff"
+
+#: recursos/moderadores.lua
+msgid "Gerenciamento de Moderadores"
+msgstr "Staff Management"
+
+#: recursos/moderadores.lua
+msgid "Lista de Moderadores"
+msgstr "Staff List"
+
+#: recursos/moderadores.lua
+msgid "Novo moderador"
+msgstr "New Staff"
+
+#: recursos/moderadores.lua
+msgid "Adicionar Moderador"
+msgstr "Add staff"
+
+#: recursos/moderadores.lua
+msgid "Remover Moderador"
+msgstr "Remove Staff"
+
+#: recursos/moderadores.lua
+msgid "Interditar Servidor"
+msgstr "Interdict Server"
+
+#: recursos/moderadores.lua
+msgid ""
+"Expulsa todos os jogadores comuns e permite apenas moderadores conectarem"
+msgstr "Kick all common players and allows only moderators to join"
+
+#: recursos/moderadores.lua
+msgid "Aviso de Servidor Interditado"
+msgstr "Interdict Server Message"
+
+#: recursos/moderadores.lua recursos/regras.lua
+msgid "Redefinir"
+msgstr "Reset"
+
+#: recursos/penalidades.lua
+msgid "Silenciar"
+msgstr "Mute"
+
+#: recursos/penalidades.lua
+msgid "Banir"
+msgstr "Ban"
+
+#: recursos/penalidades.lua
+msgid "@1 minutos"
+msgstr "@1 minutes"
+
+#: recursos/penalidades.lua
+msgid "@1 hora"
+msgstr "@1 hour"
+
+#: recursos/penalidades.lua
+msgid "@1 horas"
+msgstr "@1 hours"
+
+#: recursos/penalidades.lua
+msgid "@1 dia"
+msgstr "@1 day"
+
+#: recursos/penalidades.lua
+msgid "@1 dias"
+msgstr "@1 days"
+
+#: recursos/penalidades.lua
+msgid "@1 meses"
+msgstr "@1 months"
+
+#: recursos/penalidades.lua
+msgid "@1 ano"
+msgstr "@1 year"
+
+#: recursos/penalidades.lua
+msgid "@1 anos"
+msgstr "@1 years"
+
+#: recursos/penalidades.lua
+msgid "sempre"
+msgstr "ever"
+
+#: recursos/penalidades.lua
+msgid "Penalidades"
+msgstr "Penalties"
+
+#: recursos/penalidades.lua
+msgid "Jogador a penalizar"
+msgstr "Player to penalize"
+
+#: recursos/penalidades.lua
+msgid "Remover Penalidades"
+msgstr "Remove Penalty"
+
+#: recursos/penalidades.lua
+msgid "Pena"
+msgstr "Penalty"
+
+#: recursos/penalidades.lua
+msgid "Tempo"
+msgstr "Duration"
+
+#: recursos/penalidades.lua
+msgid "Aplicar Penalidade"
+msgstr "Apply Penalty"
+
+#: recursos/penalidades.lua
+msgid "Nenhum jogador informado"
+msgstr "No player informed"
+
+#: recursos/penalidades.lua
+msgid "Penalidade aplicada em @1"
+msgstr "Penalty applied at @1"
+
+#: recursos/penalidades.lua
+msgid "Todas penalidades removidas de @1"
+msgstr "All penalties removed from @1"
+
+#: recursos/penalidades.lua
+msgid "Banido permanentemente"
+msgstr "Permanently banned"
+
+#: recursos/penalidades.lua
+msgid "Banido temporariamente. Restante (d:h:m):"
+msgstr "Banned temporarily. Remaining (d:h:m):"
+
+#: recursos/penalidades.lua
+msgid "Foste silenciado permanentemente neste servidor"
+msgstr "You have been permanently muted on this server"
+
+#: recursos/penalidades.lua
+msgid ""
+"Foste silenciado temporariamente. Restam ainda @1d @2h e @3d para poderes "
+"voltar a falar normalmente"
+msgstr ""
+"You were temporarily muted. You still have @1d @2h @3d to be able to speak "
+"normally"
+
+#: recursos/regras.lua
+msgid "Sem Regras"
+msgstr "No Rules"
+
+#: recursos/regras.lua
+msgid "Regras"
+msgstr "Rules"
+
+#: recursos/regras.lua
+msgid "Regras do Servidor"
+msgstr "Server Rules"
+
+#: recursos/regras.lua
+msgid "Verificar"
+msgstr "Review"
+
+#: recursos/regras.lua
+msgid "Obrigar jogadores a aceitar as regras do servidor"
+msgstr "Forcing players to accept server rules"
+
+#: recursos/regras.lua
+msgid "Regras redefinidas"
+msgstr "Saved rules"
+
+#: recursos/regras.lua
+msgid "Recusar"
+msgstr "Refuse"
+
+#: recursos/regras.lua
+msgid "Aceitar"
+msgstr "Accept"
+
+#~ msgid "restante"
+#~ msgstr "remaning"
+
+#~ msgid "DD:HH:MM"
+#~ msgstr "DD:HH:MM"
+
+#~ msgid "Tempo de banimento restante:"
+#~ msgstr "Time remaining:"
+
+#~ msgid ""
+#~ "Foste banido temporariamente. Restam ainda @1d, @2h e @3d para poderes "
+#~ "voltar a conectar"
+#~ msgstr ""
+#~ "You were temporarily banned. Still left @1d @2h @3d to be able to rejoin"
+
+#~ msgid "@1d"
+#~ msgstr "@1d"
+
+#~ msgid "@1h"
+#~ msgstr "@1h"
+
+#~ msgid "@1min"
+#~ msgstr "@1min"
+
+#~ msgid "@1, @2 e @3"
+#~ msgstr "@1, @2 e @3"
+
+#~ msgid "Restam ainda @1 para poderes retornar"
+#~ msgstr "Still left @1 to be able to rejoin"
+
+#~ msgid "@1 minuto"
+#~ msgstr "@1 minute"

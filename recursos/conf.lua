@@ -9,13 +9,16 @@
 	Recurso para edição de diretrizes do servidor
   ]]
 
+-- Tradutor de texto
+local S = gestor.S
+
 -- Lista de configurações alteraveis
 local lista_configs = {
 	-- Nome do servidor
 	{
-		name = "Nome do Servidor",
+		name = S("Nome do Servidor"),
 		format = "string",
-		desc = "Esse nome vai ser exibido na lista de servidores publicos",
+		desc = S("Esse nome vai ser exibido na lista de servidores publicos"),
 		get_value = function()
 			return minetest.settings:get("server_name")
 		end,
@@ -25,9 +28,9 @@ local lista_configs = {
 	},
 	-- Descritivo do servidor
 	{
-		name = "Descritivo do Servidor",
+		name = S("Descritivo do Servidor"),
 		format = "string",
-		desc = "Esse texto descritivo do servidor vai ser exibido na lista de servidores publicos",
+		desc = S("Esse texto descritivo do servidor vai ser exibido na lista de servidores publicos"),
 		get_value = function()
 			return minetest.settings:get("server_description")
 		end,
@@ -37,9 +40,9 @@ local lista_configs = {
 	},
 	-- Website do servidor
 	{
-		name = "Website do Servidor",
+		name = S("Website do Servidor"),
 		format = "string",
-		desc = "Precisar ser o URL do website do servidor",
+		desc = S("Precisar ser o URL do website do servidor"),
 		get_value = function()
 			return minetest.settings:get("server_url")
 		end,
@@ -49,9 +52,9 @@ local lista_configs = {
 	},
 	-- Endereço do servidor
 	{
-		name = "Endereço do Servidor",
+		name = S("Endereço do Servidor"),
 		format = "string",
-		desc = "Endereço do servidor",
+		desc = S("Endereço do servidor"),
 		get_value = function()
 			return minetest.settings:get("server_address")
 		end,
@@ -61,9 +64,9 @@ local lista_configs = {
 	},
 	-- Porta do servidor
 	{
-		name = "Porta UDP do Servidor",
+		name = S("Porta UDP do Servidor"),
 		format = "int",
-		desc = "Porta UDP do onde o servidor de Minetest vai operar na hospedagem",
+		desc = S("Porta UDP do onde o servidor de Minetest vai operar na hospedagem"),
 		get_value = function()
 			return minetest.settings:get("port")
 		end,
@@ -73,10 +76,10 @@ local lista_configs = {
 	},
 	-- Anunciar Servidor
 	{
-		name = "Anunciar Servidor",
+		name = S("Anunciar Servidor"),
 		format = "bool",
-		desc = "Anunciar Servidor na lista de servidores",
-		checkbox_name = "Anunciar Servidor",
+		desc = S("Anunciar Servidor na lista de servidores"),
+		checkbox_name = S("Anunciar Servidor"),
 		get_value = function()
 			return minetest.settings:get("server_announce") or "true"
 		end,
@@ -86,10 +89,10 @@ local lista_configs = {
 	},
 	-- Spawn Estatico
 	{
-		name = "Spawn Estatico",
+		name = S("Spawn Estatico"),
 		format = "string",
-		desc = "Coordenada do spawn estatico do servidor onde os jogadores vao spawnar ou respawnar apos morrer"
-			.."\nExemplo:"
+		desc = S("Coordenada do spawn estatico do servidor onde os jogadores vao spawnar ou respawnar apos morrer")
+			.."\n"..S("Exemplo:")
 			.."\n1500 45 -555",
 		get_value = function()
 			return minetest.settings:get("static_spawnpoint") or ""
@@ -100,9 +103,9 @@ local lista_configs = {
 	},
 	-- Senha do Servidor
 	{
-		name = "Senha do Servidor",
+		name = S("Senha do Servidor"),
 		format = "string",
-		desc = "Senha obrigatoria para novos jogadores",
+		desc = S("Senha obrigatoria para novos jogadores"),
 		get_value = function()
 			return minetest.settings:get("default_password")
 		end,
@@ -112,10 +115,10 @@ local lista_configs = {
 	},
 	-- Vagas/Slots
 	{
-		name = "Vagas",
+		name = S("Vagas"),
 		format = "int",
-		desc = "Vagas para jogadores online"
-			.."\nJogadores com o privilegio server possuem vaga reservada",
+		desc = S("Vagas para jogadores online")
+			.."\n"..S("Jogadores com o privilegio server possuem vaga reservada"),
 		get_value = function()
 			return minetest.settings:get("max_users")
 		end,
@@ -125,10 +128,10 @@ local lista_configs = {
 	},
 	-- PvP
 	{
-		name = "PvP",
+		name = S("PvP"),
 		format = "bool",
-		desc = "Permitir que jogadores ataquem diretamente outros jogadores",
-		checkbox_name = "Ativar PvP",
+		desc = S("Permitir que jogadores ataquem diretamente outros jogadores"),
+		checkbox_name = S("Ativar PvP"),
 		get_value = function()
 			return minetest.settings:get("enable_pvp") or "true"
 		end,
@@ -138,10 +141,10 @@ local lista_configs = {
 	},
 	-- Dano
 	{
-		name = "Dano",
+		name = S("Dano"),
 		format = "bool",
-		desc = "Permitir que jogadores levem dano",
-		checkbox_name = "Ativar Dano",
+		desc = S("Permitir que jogadores levem dano"),
+		checkbox_name = S("Ativar Dano"),
 		get_value = function()
 			return minetest.settings:get("enable_damage") or "true"
 		end,
@@ -151,10 +154,10 @@ local lista_configs = {
 	},
 	-- Modo Criativo
 	{
-		name = "Modo Criativo",
+		name = S("Modo Criativo"),
 		format = "bool",
-		desc = "Permitir que jogar no modo criativo incluindo inventario criativo e itens ilimitados",
-		checkbox_name = "Ativar Modo Criativo",
+		desc = S("Permitir que jogar no modo criativo incluindo inventario criativo e itens ilimitados"),
+		checkbox_name = S("Ativar Modo Criativo"),
 		get_value = function()
 			return minetest.settings:get("creative_mode") or "true"
 		end,
@@ -164,10 +167,10 @@ local lista_configs = {
 	},
 	-- Distancia para ver Jogadores
 	{
-		name = "Distancia para ver Jogadores",
+		name = S("Distancia para ver Jogadores"),
 		format = "int",
-		desc = "Distancia minima para visualizar outros jogadores no mapa"
-			.."\nDefina 0 para distancia ilimitada",
+		desc = S("Distancia minima para visualizar outros jogadores no mapa")
+			.."\n"..S("Defina 0 para distancia ilimitada"),
 		get_value = function()
 			return minetest.settings:get("player_transfer_distance")
 		end,
@@ -177,9 +180,9 @@ local lista_configs = {
 	},
 	-- Permanencia de Itens Dropados
 	{
-		name = "Permanencia de Itens Dropados",
+		name = S("Permanencia de Itens Dropados"),
 		format = "int",
-		desc = "Tempo em segundos que um item fica dropado ate ser removido automaticamente pelo servidor",
+		desc = S("Tempo em segundos que um item fica dropado ate ser removido automaticamente pelo servidor"),
 		get_value = function()
 			return minetest.settings:get("item_entity_ttl") or 900
 		end,
@@ -189,10 +192,10 @@ local lista_configs = {
 	},
 	-- Mostrar status ao conectar
 	{
-		name = "Mostrar status ao conectar",
+		name = S("Mostrar status ao conectar"),
 		format = "bool",
-		desc = "Mostrar status do servidor ao conectar",
-		checkbox_name = "Mostrar Status",
+		desc = S("Mostrar status do servidor ao conectar"),
+		checkbox_name = S("Mostrar Status"),
 		get_value = function()
 			return minetest.settings:get("show_statusline_on_connect") or "true"
 		end,
@@ -202,14 +205,14 @@ local lista_configs = {
 	},
 	-- Tempo do Ciclo dia/noite
 	{
-		name = "Tempo do Ciclo dia/noite",
+		name = S("Tempo do Ciclo dia/noite"),
 		format = "int",
-		desc = "Tempo do Ciclo dia/noite"
-			.."\nEquivale a um multiplicador de velocidade relacionado ao tempo do ciclo dia/noite real"
-			.."\nExemplos:"
-			.."\n72 = 20 minutos"
-			.."\n360 = 4 minutos"
-			.."\n1 = 24 horas (equivalendo a um dia real)",
+		desc = S("Tempo do Ciclo dia/noite")
+			.."\n"..S("Equivale a um multiplicador de velocidade relacionado ao tempo do ciclo dia/noite real")
+			.."\n"..S("Exemplos:")
+			.."\n"..S("72 = 20 minutos")
+			.."\n"..S("360 = 4 minutos")
+			.."\n"..S("1 = 24 horas (equivalendo a um dia real)"),
 		get_value = function()
 			return minetest.settings:get("time_speed") or 72
 		end,
@@ -219,9 +222,9 @@ local lista_configs = {
 	},
 	-- Limite do Mundo
 	{
-		name = "Limite do Mundo",
+		name = S("Limite do Mundo"),
 		format = "int",
-		desc = "Distancia do centro ate a borda do mundo",
+		desc = S("Distancia do centro ate a borda do mundo"),
 		get_value = function()
 			return minetest.settings:get("mapgen_limit") or 31000
 		end,
@@ -231,9 +234,9 @@ local lista_configs = {
 	},
 	-- Auto Salvamento
 	{
-		name = "Auto Salvamento",
+		name = S("Auto Salvamento"),
 		format = "float",
-		desc = "Tempo em segundos entre cada auto salvamento do mundo do servidor",
+		desc = S("Tempo em segundos entre cada auto salvamento do mundo do servidor"),
 		get_value = function()
 			return minetest.settings:get("server_map_save_interval") or 72
 		end,
@@ -243,10 +246,10 @@ local lista_configs = {
 	},
 	-- Senha Obrigatoria
 	{
-		name = "Senha Obrigatoria",
+		name = S("Senha Obrigatoria"),
 		format = "bool",
-		desc = "Impede que jogadores novos se conectem ao servidor sem usar senha",
-		checkbox_name = "Senha Obrigatoria",
+		desc = S("Impede que jogadores novos se conectem ao servidor sem usar senha"),
+		checkbox_name = S("Senha Obrigatoria"),
 		get_value = function()
 			return minetest.settings:get("disallow_empty_password") or "false"
 		end,
@@ -256,10 +259,10 @@ local lista_configs = {
 	},
 	-- Privilegios Automaticos
 	{
-		name = "Privilegios Automaticos",
+		name = S("Privilegios Automaticos"),
 		format = "string",
-		desc = "Privilegios dados automaticamente quando um novo jogador se conecta ao servidor"
-			.."\nSeparados por virgulas",
+		desc = S("Privilegios dados automaticamente quando um novo jogador se conecta ao servidor")
+			.."\n"..S("Separados por virgulas"),
 		get_value = function()
 			return minetest.settings:get("default_privs") or "interact, shout"
 		end,
@@ -269,10 +272,10 @@ local lista_configs = {
 	},
 	-- Privilegios Basicos
 	{
-		name = "Privilegios Basicos",
+		name = S("Privilegios Basicos"),
 		format = "string",
-		desc = "Privilegios dados para jogadores que possuem o privilegio basic_privs"
-			.."\nSeparados por virgulas",
+		desc = S("Privilegios dados para jogadores que possuem o privilegio basic_privs")
+			.."\n"..S("Separados por virgulas"),
 		get_value = function()
 			return minetest.settings:get("basic_privs") or "interact, shout"
 		end,
@@ -282,10 +285,10 @@ local lista_configs = {
 	},
 	-- AntiFlood de Bate-Papo
 	{
-		name = "AntiFlood de Bate-Papo",
+		name = S("AntiFlood de Bate-Papo"),
 		format = "bool",
-		desc = "Sistema que evita que jogadores enviem mensagens em demasia no bate-papo",
-		checkbox_name = "AntiFlood de Bate-Papo",
+		desc = S("Sistema que evita que jogadores enviem mensagens em demasia no bate-papo"),
+		checkbox_name = S("AntiFlood de Bate-Papo"),
 		get_value = function()
 			return minetest.settings:get("gestor_sistema_antflood_chat") or "false"
 		end,
@@ -295,10 +298,10 @@ local lista_configs = {
 	},
 	-- AntiCheat
 	{
-		name = "AntiCheat",
+		name = S("AntiCheat"),
 		format = "bool",
-		desc = "Esse AntiCheat faz parte dos algoritimos basicos do Minetest para verificar a atividade dos jogadores",
-		checkbox_name = "Anticheat",
+		desc = S("Esse AntiCheat faz parte dos algoritimos basicos do Minetest para verificar a atividade dos jogadores"),
+		checkbox_name = S("Anticheat"),
 		get_value = function()
 			local v = minetest.settings:get("disable_anticheat") or "false"
 			-- Inverte ao exibir
@@ -320,10 +323,10 @@ local lista_configs = {
 	},
 	-- RollBack
 	{
-		name = "RollBack",
+		name = S("RollBack"),
 		format = "bool",
-		desc = "Sistema que armazena eventos e atividades dos jogadores afim de reconstituir atividades",
-		checkbox_name = "RollBack",
+		desc = S("Sistema que armazena eventos e atividades dos jogadores afim de reconstituir atividades"),
+		checkbox_name = S("RollBack"),
 		get_value = function()
 			return minetest.settings:get("enable_rollback_recording") or "false"
 		end,
@@ -333,9 +336,9 @@ local lista_configs = {
 	},
 	-- Mensagem de bem vindo
 	{
-		name = "Mensagem de Bem Vindo",
+		name = S("Mensagem de Bem Vindo"),
 		format = "string",
-		desc = "Mensagem apresentada ao jogador quando conectar ao servidor",
+		desc = S("Mensagem apresentada ao jogador quando conectar ao servidor"),
 		get_value = function()
 			return minetest.settings:get("motd")
 		end,
@@ -345,9 +348,9 @@ local lista_configs = {
 	},
 	-- Mensagem de crash do servidor
 	{
-		name = "Mensagem de Crash",
+		name = S("Mensagem de Crash"),
 		format = "string",
-		desc = "Mensagem exibida aos jogadores que estiverem online quando o servidor parar de funcionar inesperadamente (por erros do jogo)",
+		desc = S("Mensagem exibida aos jogadores que estiverem online quando o servidor parar de funcionar inesperadamente (por erros do jogo)"),
 		get_value = function()
 			return minetest.settings:get("kick_msg_crash")
 		end,
@@ -376,10 +379,10 @@ end)
 
 -- Registrar aba 'diretrizes'
 gestor.registrar_aba("conf", {
-	titulo = "Diretrizes",
+	titulo = S("Diretrizes"),
 	get_formspec = function(name)
 		
-		local formspec = "label[3.5,1;Diretrizes]"
+		local formspec = "label[3.5,1;"..S("Diretrizes").."]"
 			.."textlist[9,1;4.5,9.8;menu;"..string_menu_configs.."]"
 		
 		-- Construir formulario de acordo com item escolhido
@@ -397,7 +400,7 @@ gestor.registrar_aba("conf", {
 				form = form ..  "field[3.8,2.3;5,1;config_label_1;;"..escolha.get_value().."]"
 				
 				-- Botao para definir configuração
-				form = form ..  "button[3.5,2.8;5,1;definir;Definir]"
+				form = form ..  "button[3.5,2.8;5,1;definir;"..S("Definir").."]"
 				
 				-- Texto de aviso
 				if acessos[name].aviso then
@@ -406,7 +409,7 @@ gestor.registrar_aba("conf", {
 				end
 				
 				-- Descritivo
-				form = form .. "textarea[3.8,4.3;5,7.7;;Descritivo:\n"..escolha.desc..";]"
+				form = form .. "textarea[3.8,4.3;5,7.7;;"..S("Descritivo")..":\n"..escolha.desc..";]"
 			end
 			
 			-- Checkbox para preenchimento
@@ -421,7 +424,7 @@ gestor.registrar_aba("conf", {
 				end
 				
 				-- Descritivo
-				form = form .. "textarea[3.8,3.3;5,8.7;;Descritivo:\n"..escolha.desc..";]"
+				form = form .. "textarea[3.8,3.3;5,8.7;;"..S("Descritivo")..":\n"..escolha.desc..";]"
 			end
 			
 			-- Insere no formspec
@@ -429,7 +432,9 @@ gestor.registrar_aba("conf", {
 		else
 			
 			-- Nenhuma diretriz escolhida
-			formspec = formspec .. "textarea[3.8,1.5;5,8.7;;Escolha uma diretriz para editar\n\nTodas as diretrizes serao repassadas ao arquivo minetest.config quando o minetest for encerrado, no entanto algumas modificações ja causam efeito imediato\n\nCuidado ao editar algumas diretrizes pois podem causar instabilidade no servidor;]"
+			formspec = formspec .. "textarea[3.8,1.5;5,8.7;;"..S("Escolha uma diretriz para editar")
+				.."\n\n"..S("Todas as diretrizes serao repassadas ao arquivo minetest.config quando o minetest for encerrado, no entanto algumas modificações ja causam efeito imediato")
+				.."\n\n"..S("Cuidado ao editar algumas diretrizes pois podem causar instabilidade no servidor")..";]"
 		
 		end
 		
@@ -458,7 +463,7 @@ gestor.registrar_aba("conf", {
 			-- Formato de numero
 			if escolha.format == "int" or escolha.format == "float" then
 				if tonumber(value) == nil then
-					acessos[name].aviso = "Precisar ser numero"
+					acessos[name].aviso = S("Precisar ser numero")
 					gestor.menu_principal(name)
 					return
 				else
@@ -492,11 +497,11 @@ gestor.registrar_aba("conf", {
 			end
 			
 			-- Texto de aviso
-			acessos[name].aviso = "Definido"
+			acessos[name].aviso = S("Definido")
 			if value == "true" then
-				acessos[name].aviso = "Ativado"
+				acessos[name].aviso = S("Ativado")
 			elseif value == "false" then
-				acessos[name].aviso = "Desativado"
+				acessos[name].aviso = S("Desativado")
 			end
 			
 			-- Configurar valor

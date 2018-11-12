@@ -9,9 +9,12 @@
 	Recurso para alerta de crash do servidor
   ]]
 
+-- Tradutor de texto
+local S = gestor.S
+
 -- Registrar aba 'diretrizes'
 gestor.registrar_aba("alerta_de_crash", {
-	titulo = "Alerta de Crash",
+	titulo = S("Alerta de Crash"),
 	get_formspec = function(name)
 		
 		-- Pegar dados
@@ -23,9 +26,9 @@ gestor.registrar_aba("alerta_de_crash", {
 		local titulo = minetest.setting_get("gestor_titulo_email") or "-"
 		local texto = minetest.setting_get("gestor_texto_email") or "-"
 		
-		local status_senha = "nenhuma"
+		local status_senha = S("nenhuma")
 		if senha_login_smtp then
-			status_senha = "salva"
+			status_senha = S("salva")
 		end
 		
 		if status_alerta_de_crash == false then
@@ -34,23 +37,23 @@ gestor.registrar_aba("alerta_de_crash", {
 			status_alerta_de_crash = "2"
 		end
 		
-		formspec = "label[3.5,1;Alerta de Crash]"
+		formspec = "label[3.5,1;"..S("Alerta de Crash").."]"
 			
 			-- Sistema Verificador AntiCrash
-			.."label[3.5,2;Sistema Verificador AntiCrash]"
-			.."button[3.5,2.6;3,1;salvar;Salvar Dados]"
+			.."label[3.5,2;"..S("Sistema Verificador AntiCrash").."]"
+			.."button[3.5,2.6;3,1;salvar;"..S("Salvar Dados").."]"
 			-- Sistema Notificador via Email
-			.."label[3.5,5;Sistema Notificador via Email]"
-			.."label[3.5,5.4;Estado]"
+			.."label[3.5,5;"..S("Sistema Notificador via Email").."]"
+			.."label[3.5,5.4;"..S("Estado").."]"
 			
-			.."dropdown[3.5,5.8;2,1;status_email;Inativo,Ativo;"..status_alerta_de_crash.."]"
-			.."field[5.8,6;4.3,1;login_smtp;Login emissor;"..login_smtp.."]"
-			.."pwdfield[10.1,6;3.3,1;senha;Senha ("..status_senha..")]"
-			.."field[3.8,7.2;9.6,1;servidor_smtp;Servidor SMTP de envio (host:porta);"..servidor_smtp.."]"
-			.."field[3.8,8.4;5,1;titulo;Titulo da mensagem de email enviada;"..titulo.."]"
-			.."field[8.8,8.4;4.6,1;email_destinatario;Email do destinatario;"..email_destinatario.."]"
-			.."field[3.8,9.6;9.6,1;texto;Texto;"..texto.."]"
-			.."button[3.5,10;5,1;testar_email;Enviar mensagem de teste]"
+			.."dropdown[3.5,5.8;2,1;status_email;"..S("Inativo")..","..S("Ativo")..";"..status_alerta_de_crash.."]"
+			.."field[5.8,6;4.3,1;login_smtp;"..S("Login emissor")..";"..login_smtp.."]"
+			.."pwdfield[10.1,6;3.3,1;senha;"..S("Senha (@1)", status_senha).."]"
+			.."field[3.8,7.2;9.6,1;servidor_smtp;"..S("Servidor SMTP de envio (host:porta)")..";"..servidor_smtp.."]"
+			.."field[3.8,8.4;5,1;titulo;"..S("Título da mensagem de email enviada")..";"..titulo.."]"
+			.."field[8.8,8.4;4.6,1;email_destinatario;"..S("Email do destinatario")..";"..email_destinatario.."]"
+			.."field[3.8,9.6;9.6,1;texto;"..S("Texto")..";"..texto.."]"
+			.."button[3.5,10;5,1;testar_email;"..S("Enviar mensagem de teste").."]"
 			
 		return formspec
 	end,
@@ -101,7 +104,7 @@ gestor.registrar_aba("alerta_de_crash", {
 			minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
 				default.gui_bg..
 				default.gui_bg_img..
-				"label[0,0;SUCESSO \nOs dados validos foram \nsalvos.]"
+				"label[0,0;"..S("Dados salvos").."]"
 			)
 			minetest.after(2, gestor.menu_principal, name)
 			return
@@ -109,17 +112,18 @@ gestor.registrar_aba("alerta_de_crash", {
 			
 		elseif fields.testar_email then
 		
-			if gestor.alerta_de_crash.enviar_email() then
+			if gestor.alerta_de_crash and gestor.alerta_de_crash.enviar_email() then
 				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
 					default.gui_bg..
 					default.gui_bg_img..
-					"label[0,0;FEITO \nComando de envio feito.\nVeja o arquivo de relatorio\ngestor_envios_de_alerta.out]"
+					"label[0,0;"..S("PRONTO. Veja o relatorio").."]"..
+					"label[0,0.5;(gestor_envios_de_alerta.out)]"
 				)	
 			else
 				minetest.show_formspec(name, "gestor:aviso", "size[4,1.8]"..
 					default.gui_bg..
 					default.gui_bg_img..
-					"label[0,0;FALHA \nFaltam dados para\nrealizar o comando de envio.\n]"
+					"label[0,0;"..S("FALHA. Faltam dados").."]"
 				)
 			end
 			minetest.after(2, gestor.menu_principal, name)

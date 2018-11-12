@@ -1,0 +1,1 @@
+init.lua menu_principal.lua recursos/alerta_de_crash.lua recursos/antiflood.lua recursos/censura.lua recursos/conf.lua recursos/desligar.lua recursos/moderadores.lua recursos/penalidades.lua recursos/regras.lua

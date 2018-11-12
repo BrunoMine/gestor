@@ -9,13 +9,16 @@
 	Recurso para exigir a aceitação das regras do servidor
   ]]
 
+-- Tradutor de texto
+local S = gestor.S
+
 -- Variavel de controle
 local exibir_regras = minetest.settings:get_bool("gestor_obrigar_aceitar_regras", false) or false
 
 -- Texto de Regras
-local texto_regras = "Sem Regras"
+local texto_regras = S("Sem Regras")
 if gestor.bd.verif("regras", "default") == false then
-	gestor.bd.salvar_texto("regras", "default", "Sem Regras")
+	gestor.bd.salvar_texto("regras", "default", texto_regras)
 end
 texto_regras = gestor.bd.pegar_texto("regras", "default")
 
@@ -39,14 +42,14 @@ end
 
 -- Registrar aba 'regras'
 gestor.registrar_aba("regras", {
-	titulo = "Regras",
+	titulo = S("Regras"),
 	get_formspec = function(name)
 		
-		local formspec = "label[3.5,1;Regras do Servidor]"
+		local formspec = "label[3.5,1;"..S("Regras do Servidor").."]"
 			.."textarea[3.9,1.8;9.8,8.5;texto_regras;;"..texto_regras.."]"
-			.."button[3.5,9.4;8,1;redefinir;Redefinir]"
-			.."button[11.5,9.4;2,1;verificar;Verificar]"
-			.."checkbox[3.5,10.1;exibir_regras;Obrigar jogadores a aceitar as regras do servidor;"..tostring(minetest.settings:get("gestor_obrigar_aceitar_regras", false)).."]"
+			.."button[3.5,9.4;8,1;redefinir;"..S("Redefinir").."]"
+			.."button[11.5,9.4;2,1;verificar;"..S("Verificar").."]"
+			.."checkbox[3.5,10.1;exibir_regras;"..S("Obrigar jogadores a aceitar as regras do servidor")..";"..tostring(minetest.settings:get("gestor_obrigar_aceitar_regras", false)).."]"
 			
 		-- Aviso
 		if acessos[name].aviso then
@@ -69,7 +72,7 @@ gestor.registrar_aba("regras", {
 		elseif fields.redefinir and fields.texto_regras ~= "" then
 			gestor.bd.salvar_texto("regras", "default", ajustar_texto(fields.texto_regras))
 			texto_regras = gestor.bd.pegar_texto("regras", "default")
-			acessos[name].aviso = "Regras redefinidas"
+			acessos[name].aviso = S("Regras redefinidas")
 			gestor.menu_principal(name)
 		
 		-- Verificar como ficou a formspec
@@ -86,10 +89,10 @@ gestor.exibir_formspec_regras = function(player)
 	local formspec = "size[9,8]"
 		..default.gui_bg
 		..default.gui_bg_img
-		.."label[0,0;Regras do Servidor]"
+		.."label[0,0;"..S("Regras do Servidor").."]"
 		.."textarea[0.5,0.5;8.8,6.8;;"..texto_regras..";;true]"
-		.."button_exit[0,7.4;3,1;recusar;Recusar]"
-		.."button_exit[6,7.4;3,1;aceitar;Aceitar]"
+		.."button_exit[0,7.4;3,1;recusar;"..S("Recusar").."]"
+		.."button_exit[6,7.4;3,1;aceitar;"..S("Aceitar").."]"
 	
 	-- Exibe regras
 	minetest.show_formspec(player:get_player_name(), "gestor:regras_obrigatorias", formspec)

@@ -9,6 +9,8 @@
 	Recurso para censurar palavras no chat publico
   ]]
 
+-- Tradutor de texto
+local S = gestor.S
 
 -- Lista de termos proibidos
 if gestor.bd.verif("censura", "bad_words_list") == false then
@@ -36,7 +38,7 @@ end)
 
 -- Registrar aba 'censura'
 gestor.registrar_aba("censura", {
-	titulo = "Termos Proibidos",
+	titulo = S("Termos Proibidos"),
 	get_formspec = function(name)
 		
 		-- Gera string dos moderadores listados
@@ -46,14 +48,14 @@ gestor.registrar_aba("censura", {
 			bad_words_string = bad_words_string .. bad_word
 		end
 		
-		local formspec = "label[3.5,1;Termos Proibidos]"
-			.."label[9,1;Lista de Termos Proibidos]"
+		local formspec = "label[3.5,1;"..S("Termos Proibidos").."]"
+			.."label[9,1;"..S("Lista de Termos Proibidos").."]"
 			.."textlist[9,1.5;4.5,3;bad_words_list;"..bad_words_string.."]"
-			.."field[3.8,2.3;5,1;new_word;Termo;]"
-			.."button[3.5,2.9;5,1;add_word;Adicionar Termo]"
-			.."button[3.5,3.8;5,1;rem_word;Remover Termo]"
+			.."field[3.8,2.3;5,1;new_word;"..S("Termo")..";]"
+			.."button[3.5,2.9;5,1;add_word;"..S("Adicionar Termo").."]"
+			.."button[3.5,3.8;5,1;rem_word;"..S("Remover Termo").."]"
 			
-			.."checkbox[3.5,4.6;bad_words_status;Censurar Termos Proibidos;"..tostring(minetest.settings:get("gestor_censurar_termos_proibidos", false)).."]"
+			.."checkbox[3.5,4.6;bad_words_status;"..S("Censurar Termos Proibidos")..";"..tostring(minetest.settings:get("gestor_censurar_termos_proibidos", false)).."]"
 			
 		return formspec
 	end,
@@ -108,7 +110,7 @@ minetest.register_on_chat_message(function(name, message)
 		-- Varre a mensagem em busca do termo
 		if string.match(m, w) then
 			-- Caso encontrar, notifica o jogador
-			minetest.chat_send_player(name, "Proibido usar o termo "..minetest.colorize("#FF0000", m))
+			minetest.chat_send_player(name, S("Proibido usar o termo @1", minetest.colorize("#FF0000", m)))
 			return true
 		end
 	end

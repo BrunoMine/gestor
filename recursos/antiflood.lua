@@ -9,6 +9,9 @@
 	Recurso para sistema Anti Flood para o chat
   ]]
 
+-- Tradutor de texto
+local S = gestor.S
+
 -- Variavel de controle
 local antiflood = minetest.settings:get_bool("gestor_sistema_antflood_chat", false) or false
 
@@ -39,7 +42,7 @@ minetest.register_on_chat_message(function(name, message)
 	if acessos[name] == nil then return end
 	
 	if acessos[name] >= 3 then 
-		minetest.chat_send_player(name, "Proibido floddar o chat com muitas mensagens")
+		minetest.chat_send_player(name, S("Proibido floddar o chat com muitas mensagens"))
 		return true
 	else
 		acessos[name] = acessos[name] + 1

@@ -9,6 +9,8 @@
 	Recurso para desligamento do servidor
   ]]
 
+-- Tradutor de texto
+local S = gestor.S
 
 -- Lista de moderadores
 if gestor.bd.verif("staff", "list") == false then
@@ -26,7 +28,7 @@ end)
 
 -- Registrar aba 'moderadores'
 gestor.registrar_aba("moderadores", {
-	titulo = "Moderadores",
+	titulo = S("Moderadores"),
 	get_formspec = function(name)
 		
 		-- Gera string dos moderadores listados
@@ -36,18 +38,18 @@ gestor.registrar_aba("moderadores", {
 			staff_list_string = staff_list_string .. staff_name
 		end
 		
-		local formspec = "label[3.5,1;Gerenciamento de Moderadores]"
-			.."label[9,1;Lista de Moderadores]"
+		local formspec = "label[3.5,1;"..S("Gerenciamento de Moderadores").."]"
+			.."label[9,1;"..S("Lista de Moderadores").."]"
 			.."textlist[9,1.5;4.5,3;staff_list;"..staff_list_string.."]"
-			.."field[3.8,2.3;5,1;new_staff;Novo moderador;]"
-			.."button[3.5,2.9;5,1;add_staff;Adicionar Moderador]"
-			.."button[3.5,3.8;5,1;rem_staff;Remover Moderador]"
+			.."field[3.8,2.3;5,1;new_staff;"..S("Novo moderador")..";]"
+			.."button[3.5,2.9;5,1;add_staff;"..S("Adicionar Moderador").."]"
+			.."button[3.5,3.8;5,1;rem_staff;"..S("Remover Moderador").."]"
 			
-			.."label[3.5,5;Interditar Servidor]"
-			.."checkbox[3.5,5.5;interditar;Interditar Servidor;"..tostring(minetest.settings:get("gestor_interditado", false)).."]"
-			.."textarea[3.8,6.3;10.2,1;;Expulsa todos os jogadores comuns e permite apenas moderadores conectarem;]"
-			.."field[3.8,7.5;7,1;aviso_interditado;Aviso de Servidor Interditado;"..(minetest.settings:get("gestor_aviso_interditado") or "").."]"
-			.."button[10.5,7.2;3,1;redefinir_msg;Redefinir]"
+			.."label[3.5,5;"..S("Interditar Servidor").."]"
+			.."checkbox[3.5,5.5;interditar;"..S("Interditar Servidor")..";"..tostring(minetest.settings:get("gestor_interditado", false)).."]"
+			.."textarea[3.8,6.3;10.2,1;;"..S("Expulsa todos os jogadores comuns e permite apenas moderadores conectarem")..";]"
+			.."field[3.8,7.5;7,1;aviso_interditado;"..S("Aviso de Servidor Interditado")..";"..(minetest.settings:get("gestor_aviso_interditado") or "").."]"
+			.."button[10.5,7.2;3,1;redefinir_msg;"..S("Redefinir").."]"
 			
 		return formspec
 	end,
