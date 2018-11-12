@@ -1,0 +1,15 @@
+{
+    "name": "gestor",
+    "description": "Um gestor de servidor de minetest",
+    "keywords": [
+        "gestor"
+    ],
+    "homepage": "https://github.com/BrunoMine/gestor",
+    "forum": "https://forum.minetest.net/viewtopic.php?t=1",
+    "screenshots": [
+        "https://raw.githubusercontent.com/BrunoMine/gestor/master/screenshot.png"
+    ],
+    "authors": [
+        "BrunoMine"
+    ]
+}
