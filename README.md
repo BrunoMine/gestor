@@ -13,9 +13,9 @@
 
 `/gestor` : Abre o painel administrativo
 
-## Recursos _(Features)_
+## Recursos
 
-### Alerta de Crash do Servidor (em planejamento)
+### Alerta de Crash do Servidor
 Permite que o jogo envie um email de notificação de 
 parada inesperada do servidor de Minetest.
 
@@ -34,7 +34,7 @@ Permite editar as configurações do servidor em `minetest.conf`.
 Gerencia a equipe de moderadores do servidor permitindo 
 interdição para ocasiões específicas.
 
-### Penalidades _()_
+### Penalidades
 Sistema de aplicação de penalidades para jogadores especificos.
 
 ### Regras
