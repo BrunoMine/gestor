@@ -18,8 +18,8 @@ minetest.register_chatcommand("gestor", {
 
  -- Menu de acesso simples
 if sfinv_menu then
-	sfinv_menu.registrar_botao("gestor:painel", {
-		titulo = "Gestor",
+	sfinv_menu.register_button("gestor:painel", {
+		title = "Gestor",
 		icon = "gestor.png",
 		privs = {server=true},
 		func = function(player)
