@@ -17,7 +17,7 @@ minetest.register_chatcommand("gestor", {
 })
 
  -- Menu de acesso simples
-if sfinv_menu then
+if type(sfinv_menu)~="nil" then
 	sfinv_menu.register_button("gestor:painel", {
 		title = "Gestor",
 		icon = "gestor.png",
